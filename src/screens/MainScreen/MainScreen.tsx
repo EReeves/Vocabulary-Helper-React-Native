@@ -62,7 +62,7 @@ export default class MainScreen extends React.Component {
     itemData = [
         { key: "Pronunciation", value: "nĭ hăo" },
         { key: "Meaning", value: "Hello" },
-        { key: "Hint", value: "It's a greeting you idiot..." },
+        { key: "Hint", value: "It's a greeting.." },
         { key: "Example", value: "你好, 我叫云义多" },
     ];
 
@@ -92,7 +92,7 @@ export default class MainScreen extends React.Component {
                         />
                     </ScrollView>
                 </View>
-                
+
                 {/*Navigation like bar docked at the bottom*/}
                 <View style={styles.bottomBar}>
                     <IconButton
