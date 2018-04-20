@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Text, View, FlatList, ScrollView } from "react-native";
+import { Text, View, FlatList, ScrollView, } from "react-native";
 import styles from "./Style";
 import { IconsLoaded, IconsMap } from "../../util/IconMap";
 import IconButton from "../../components/IconButton";
@@ -11,7 +11,7 @@ export default class MainScreen extends React.Component {
             { key: "Pronunciation", value: "nĭ hăo" },
             { key: "Meaning", value: "Hello" },
             { key: "Hint", value: "It's a greeting you idiot..." },
-            { key: "Example", value: "你好, 我叫云义多" }
+            { key: "Example", value: "你好, 我叫云义多" },
         ];
         this.defineNavButtons(props);
     }
@@ -22,17 +22,17 @@ export default class MainScreen extends React.Component {
                     {
                         id: "navicon",
                         disableIconTint: true,
-                        icon: IconsMap["navicon"]
-                    }
+                        icon: IconsMap["navicon"],
+                    },
                 ],
                 rightButtons: [
                     {
                         id: "search",
                         disableIconTint: true,
-                        icon: IconsMap["search"]
-                    }
+                        icon: IconsMap["search"],
+                    },
                 ],
-                animated: true
+                animated: true,
             });
         });
         props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
@@ -45,7 +45,7 @@ export default class MainScreen extends React.Component {
                 // this is the same id field from the static navigatorButtons definition
                 this.props.navigator.toggleDrawer({
                     side: "left",
-                    animated: true // does the toggle have transition animation or does it happen immediately (optional)
+                    animated: true,
                 });
             }
         }

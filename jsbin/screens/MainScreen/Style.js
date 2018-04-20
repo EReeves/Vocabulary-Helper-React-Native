@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import palette from "../../util/palette";
+import palette from "../../util/Palette";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignContent: "stretch",
         backgroundColor: palette.BackgroundLight,
-        padding: 0
+        padding: 0,
     },
     card: {
         flex: 2,
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         shadowColor: "#000",
         shadowRadius: 2,
-        elevation: 4
+        elevation: 4,
     },
     characterText: {
         fontFamily: "NotoSans-Regular",
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         textShadowColor: "#000",
         textShadowRadius: 4,
-        elevation: 4
+        elevation: 4,
     },
     bottomInfo: {
         flex: 4,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         shadowColor: "#000",
         shadowRadius: 2,
-        elevation: 2
+        elevation: 2,
     },
     listItemView: {
         flex: 2,
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         shadowOffset: { width: 0, height: 3 },
         shadowRadius: 4,
-        elevation: 1
+        elevation: 1,
     },
     listItemLeft: {
         flex: 1,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         textAlignVertical: "bottom",
         textAlign: "left",
         textShadowColor: palette.BackgroundDark,
-        textShadowRadius: 2
+        textShadowRadius: 2,
     },
     listItemRight: {
         flex: 1,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         textAlignVertical: "bottom",
         alignContent: "center",
         textShadowColor: palette.BackgroundDark,
-        textShadowRadius: 2
+        textShadowRadius: 2,
     },
     buttonView: {
         backgroundColor: palette.BackgroundLight,
@@ -87,13 +87,13 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         flex: 1,
         justifyContent: "center",
-        alignContent: "stretch"
+        alignContent: "stretch",
     },
     iconView: {
         justifyContent: "center",
         alignContent: "center",
         backgroundColor: palette.BackgroundLight,
-        padding: 10
+        padding: 10,
     },
     bottomBar: {
         height: 48,
@@ -105,13 +105,13 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: -2 },
         shadowRadius: 2,
         paddingLeft: 20,
-        paddingRight: 20
+        paddingRight: 20,
     },
     bottomBarIcon: {
         margin: 2,
         justifyContent: "center",
-        alignContent: "stretch"
-    }
+        alignContent: "stretch",
+    },
 });
 export default styles;
 //# sourceMappingURL=Style.js.map

@@ -1,7 +1,12 @@
 import { Navigation } from 'react-native-navigation';
-
+//Screen imports
 import MainScreen from './MainScreen/MainScreen'
-// register all screens of the app (including internal ones)
-export default function registerScreens() {
-  Navigation.registerComponent('screens.MainScreen', () => MainScreen);
+
+export class NavigationIndex {
+
+    // Register all screens of the app (including internal ones)
+    registerScreens() {
+        Navigation.registerComponent('screens.MainScreen', () => MainScreen);
+    } 
 }
+
