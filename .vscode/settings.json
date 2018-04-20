@@ -1,0 +1,9 @@
+{
+    "java.configuration.updateBuildConfiguration": "disabled",
+    "editor.wordWrap": "on",
+    "editor.detectIndentation": false,
+    "prettier.tabWidth": 4,
+    "prettier.trailingComma": "es5",
+    "git.ignoreLimitWarning": true,
+
+}

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "jsx": "react",
+    "noEmit": false,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "rootDir": "./src",
+    "outDir": "jsbin"
+  },
+  "exclude": [
+    "node_modules",
+  ],
+  "include": [
+      "src/**/*"
+  ]
+}
