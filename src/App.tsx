@@ -14,9 +14,9 @@ export class App {
     //The index is basically just a big file that defines how the app behaves, mainly the react-native-navigation config.
     startApp() {
         const nStyle = {
-            statusBarColor: palette.BackgroundDark,
+            statusBarColor: palette.BackgroundColorDark,
             navBarTextColor: palette.White,
-            navBarBackgroundColor: palette.BackgroundDark,
+            navBarBackgroundColor: palette.BackgroundColor,
             drawUnderNavBar: false,
             navBarTranslucent: false,
             header: {
@@ -24,7 +24,7 @@ export class App {
             },
             tabBarBackgroundColor: palette.BackgroundDark,
             tabBarButtonColor: palette.BackgroundLight,
-            tabBarHideShadow: true,
+            tabBarHideShadow: false,
             tabBarSelectedButtonColor: palette.White,
         };
 
@@ -39,7 +39,7 @@ export class App {
                 // optional, add this if you want a side menu drawer in your app
                 left: {
                     // optional, define if you want a drawer from the left
-                    screen: "screens.MainScreen", // unique ID registered with Navigation.registerScreen
+                    screen: "screens.DrawerScreen", // unique ID registered with Navigation.registerScreen
                     disableOpenGesture: false, // can the drawer be opened with a swipe instead of button (optional, Android only)
                     fixedWidth: 500, // a fixed width you want your left drawer to have (optional)
                 },

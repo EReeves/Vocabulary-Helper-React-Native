@@ -10,10 +10,11 @@ import {
 } from "react-native";
 
 import styles from "./Style";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import Icon from "react-native-vector-icons/EvilIcons";
 import palette from "../../util/Palette";
 import { IconsLoaded, IconsMap } from "../../util/IconMap";
 import IconButton from "../../components/IconButton";
+
 
 export default class MainScreen extends React.Component {
     constructor(public props) {
@@ -67,61 +68,32 @@ export default class MainScreen extends React.Component {
     ];
 
     render() {
-        return (
-            <View style={styles.container}>
-                
+        return <View style={styles.container}>
                 {/*Main card with vocab item*/}
                 <View style={styles.card}>
                     <Text style={styles.characterText}>你好</Text>
+                    <View style={styles.tagView}>
+                        <Text style={styles.tagText}>Chinese</Text>
+                        <IconButton name="plus" size={20} onPress={() => {}} />
+                    </View>
                 </View>
-                
+
                 {/*Info below the vocab item*/}
                 <View style={styles.bottomInfo}>
                     <ScrollView>
-                        <FlatList
-                            data={this.itemData}
-                            renderItem={({ item }) =>
-                                listItem(item.key, item.value)
-                            }
-                        />
-                        <IconButton
-                            name="pencil"
-                            size={80}
-                            outerStyle={styles.buttonView}
-                            onPress={() => {}}
-                        />
+                        <FlatList data={this.itemData} renderItem={({ item }) => listItem(item.key, item.value)} />
+                        <IconButton name="pencil" size={60} outerStyle={styles.buttonView} onPress={() => {}} />
                     </ScrollView>
                 </View>
 
                 {/*Navigation like bar docked at the bottom*/}
                 <View style={styles.bottomBar}>
-                    <IconButton
-                        name="star"
-                        size={32}
-                        outerStyle={styles.bottomBarIcon}
-                        onPress={() => {}}
-                    />
-                    <IconButton
-                        name="chevron-left"
-                        size={32}
-                        outerStyle={styles.bottomBarIcon}
-                        onPress={() => {}}
-                    />
-                    <IconButton
-                        name="chevron-right"
-                        size={32}
-                        outerStyle={styles.bottomBarIcon}
-                        onPress={() => {}}
-                    />
-                    <IconButton
-                        name="external-link"
-                        size={32}
-                        outerStyle={styles.bottomBarIcon}
-                        onPress={() => {}}
-                    />
+                    <IconButton name="star" color={palette.White} size={32} outerStyle={styles.bottomBarIcon} onPress={() => {}} />
+                    <IconButton name="chevron-left" color={palette.White} size={32} outerStyle={styles.bottomBarIcon} onPress={() => {}} />
+                    <IconButton name="chevron-right" color={palette.White} size={32} outerStyle={styles.bottomBarIcon} onPress={() => {}} />
+                    <IconButton name="external-link" color={palette.White} size={32} outerStyle={styles.bottomBarIcon} onPress={() => {}} />
                 </View>
-            </View>
-        );
+            </View>;
     }
 }
 

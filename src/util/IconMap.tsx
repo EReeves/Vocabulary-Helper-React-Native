@@ -8,6 +8,7 @@ const icons = {
     "information-circled": [Ionicons, "information-circled", 32, palette.White],
     navicon: [Evilicons, "navicon", 32, palette.White],
     search: [Evilicons, "search", 32, palette.White],
+    eye: [Evilicons, "eye", 32, palette.White],
 };
 
 let IconsMap = {};

@@ -25,23 +25,20 @@ export default class IconButton extends React.Component<Props, {}> {
     styles = StyleSheet.create({
         buttonView: {
             backgroundColor: palette.BackgroundLight,
-            marginTop: 30,
             flexDirection: "row",
-            flex: 1,
             justifyContent: "center",
-            alignContent: "stretch",
+            alignContent: "center",
         },
         iconView: {
             justifyContent: "center",
             alignContent: "center",
-            padding: 10,
         },
     });
 
     render() {
         //ripple properties
         let borderless = this.props.borderless || true;
-        let rippleColor = this.props.rippleColor || palette.White;
+        let rippleColor = this.props.rippleColor || palette.Black;
 
         return (
             <View style={this.props.outerStyle || this.styles.buttonView}>
@@ -55,7 +52,7 @@ export default class IconButton extends React.Component<Props, {}> {
                     <View style={this.props.innerStyle || this.styles.iconView}>
                         <Icon
                             name={this.props.name}
-                            color={this.props.color || palette.White}
+                            color={this.props.color || palette.Text}
                             size={this.props.size}
                         />
                     </View>
