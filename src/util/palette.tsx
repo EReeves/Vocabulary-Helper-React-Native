@@ -12,6 +12,17 @@ const Palette = {
     CornerRadius: 3,
     Elevation: 2,
     Margin: 10,
+
+    //Number constants
+    Two: 2,
+    Five: 5,
+    Ten: 10,
+    Twenty: 20,
+    Thirty: 30,
+
+    //Size constants
+    BarSize: 58,
+    BarSizeSmall: 48
 };
 
 export default Palette;

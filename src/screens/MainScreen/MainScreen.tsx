@@ -1,12 +1,12 @@
 import * as React from "react";
 import {
-    StyleSheet,
-    Text,
-    View,
-    Button,
-    FlatList,
-    ScrollView,
-    TouchableNativeFeedback,
+   StyleSheet,
+   Text,
+   View,
+   Button,
+   FlatList,
+   ScrollView,
+   TouchableNativeFeedback,
 } from "react-native";
 
 import styles from "./Style";
@@ -14,94 +14,106 @@ import Icon from "react-native-vector-icons/EvilIcons";
 import palette from "../../util/Palette";
 import { IconsLoaded, IconsMap } from "../../util/IconMap";
 import IconButton from "../../components/IconButton";
+import { GlobalState } from "../../GlobalState";
+import { States, IMainState } from "./States";
+import * as Animatable from "react-native-animatable";
+import { NavigationButtons } from "./NavigationButtons";
+import { NavBar } from "./NavBar";
 
+export default class MainScreen extends React.Component<any, IMainState> {
+   constructor(public props) {
+      super(props);
+      new NavigationButtons(props);
+      this.state = States.GetMode(props.flashMode);
+   }
 
-export default class MainScreen extends React.Component {
-    constructor(public props) {
-        super(props);
-        this.defineNavButtons(props);
-    }
+   //TODO: replace with database data.
+   itemData = [
+      { key: "Pronunciation", value: "nĭ hăo" },
+      { key: "Meaning", value: "Hello" },
+      { key: "Hint", value: "It's a greeting.." },
+      { key: "Example", value: "你好, 我叫云义多" },
+   ];
 
-    defineNavButtons(props) {
-        IconsLoaded.then(() => {
-            props.navigator.setButtons({
-                leftButtons: [
-                    {
-                        id: "navicon",
-                        disableIconTint: true,
-                        icon: IconsMap["navicon"],
-                    },
-                ],
-                rightButtons: [
-                    {
-                        id: "search",
-                        disableIconTint: true,
-                        icon: IconsMap["search"],
-                    },
-                ],
-                animated: true,
-            });
-        });
+   render() {
+      return (
+         <View style={styles.container}>
+            {/*Main card with vocab item*/}
+            <View style={styles.card}>
+               <Text style={styles.characterText}>你好</Text>
+               <View style={styles.tagView}>
+                  <Text style={styles.tagText}>Chinese</Text>
+                  <IconButton name="plus" size={20} onPress={() => {}} />
+               </View>
+            </View>
 
-        props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-    }
+            {/*Info below the vocab item*/}
+            {this.middleView()}
 
-    onNavigatorEvent(event) {
-        // this is the onPress handler for the two buttons together
-        if (event.type == "NavBarButtonPress") {
-            // this is the event type for button presses
-            if (event.id == "navicon") {
-                // this is the same id field from the static navigatorButtons definition
-                this.props.navigator.toggleDrawer({
-                    side: "left", // the side of the drawer since you can have two, 'left' / 'right'
-                    animated: true, // does the toggle have transition animation or does it happen immediately (optional)
-                });
-            }
-        }
-    }
+            {/*Navigation like bar docked at the bottom*/}
+            <NavBar />
+         </View>
+      );
+   }
 
-    itemData = [
-        { key: "Pronunciation", value: "nĭ hăo" },
-        { key: "Meaning", value: "Hello" },
-        { key: "Hint", value: "It's a greeting.." },
-        { key: "Example", value: "你好, 我叫云义多" },
-    ];
-
-    render() {
-        return <View style={styles.container}>
-                {/*Main card with vocab item*/}
-                <View style={styles.card}>
-                    <Text style={styles.characterText}>你好</Text>
-                    <View style={styles.tagView}>
-                        <Text style={styles.tagText}>Chinese</Text>
-                        <IconButton name="plus" size={20} onPress={() => {}} />
-                    </View>
-                </View>
-
-                {/*Info below the vocab item*/}
-                <View style={styles.bottomInfo}>
-                    <ScrollView>
-                        <FlatList data={this.itemData} renderItem={({ item }) => listItem(item.key, item.value)} />
-                        <IconButton name="pencil" size={60} outerStyle={styles.buttonView} onPress={() => {}} />
-                    </ScrollView>
-                </View>
-
-                {/*Navigation like bar docked at the bottom*/}
-                <View style={styles.bottomBar}>
-                    <IconButton name="star" color={palette.White} size={32} outerStyle={styles.bottomBarIcon} onPress={() => {}} />
-                    <IconButton name="chevron-left" color={palette.White} size={32} outerStyle={styles.bottomBarIcon} onPress={() => {}} />
-                    <IconButton name="chevron-right" color={palette.White} size={32} outerStyle={styles.bottomBarIcon} onPress={() => {}} />
-                    <IconButton name="external-link" color={palette.White} size={32} outerStyle={styles.bottomBarIcon} onPress={() => {}} />
-                </View>
-            </View>;
-    }
-}
-
-function listItem(head: string, footer: string) {
-    return (
-        <View style={styles.listItemView}>
+   listItem(head: string, footer: string) {
+      return (
+         <View style={styles.listItemView}>
             <Text style={styles.listItemLeft}>{head + ":"}</Text>
             <Text style={styles.listItemRight}>{footer}</Text>
-        </View>
-    );
+         </View>
+      );
+   }
+
+   revealCard() {
+      this.setState(States.FlashModeRevealed);
+   }
+
+   //Gets the middle view depending on the current mode.
+   middleView() {
+      let view = null;
+      if (!this.props.flashMode || this.state.reveal) {
+         view = (
+            <Animatable.View
+               animation="bounceInRight"
+               useNativeDriver={
+                  true //View with details.
+               }
+               duration={500}
+               style={styles.bottomInfo}>
+               <FlatList
+                  data={this.itemData}
+                  renderItem={({ item }) => this.listItem(item.key, item.value)}
+               />
+               <View style={styles.infoButtonHolder}>
+                  <IconButton
+                     name="pencil"
+                     size={80}
+                     outerStyle={styles.buttonView}
+                     onPress={() => {}}
+                  />
+                  <IconButton
+                     name="arrow-right"
+                     size={80}
+                     outerStyle={styles.buttonView}
+                     onPress={() => {}}
+                  />
+               </View>
+            </Animatable.View>
+         );
+      } else {
+         //View with a question mark button.
+         view = (
+            <View style={styles.questionView}>
+               <IconButton
+                  name="question"
+                  size={100}
+                  outerStyle={styles.questionButtonView}
+                  onPress={() => this.revealCard.bind(this)}
+               />
+            </View>
+         );
+      }
+      return view;
+   }
 }
