@@ -15,6 +15,7 @@ import {
 // DrawerScreen direct dependencies
 import { styles, DynamicStyles } from "./Style";
 import { States, IDrawerState } from "./States";
+import { DrawerRouter } from "./DrawerRouter";
 
 // Thrid party dependencies
 import Icon from "react-native-vector-icons/EvilIcons";
@@ -25,6 +26,7 @@ import { IconMap } from "../../util/IconMap";
 
 // Components
 import IconButton from "../../components/IconButton";
+import BasicButton from "../../components/BasicButton";
 
 // Navigation
 import { NavigationIndex } from "../NavigationIndex";
@@ -32,10 +34,23 @@ import { NavigationIndex } from "../NavigationIndex";
 /** Import End */
 
 export default class DrawerScreen extends React.Component<any, IDrawerState> {
+    router: DrawerRouter;
+
     constructor(public props) {
         super(props);
-        this.state = States.GetMode(props.mutable.flashMode);
+
+        const mode = props.mutable !== undefined &&
+            props.mutable.flashMode !== null
+            ? props.mutable.flashMode : false;
+        this.state = States.GetMode(mode); // Use what's set else open in review mode.
+
         this.state.mutable.fadeAnim = new Animated.Value(1);
+
+        console.log(this.props);
+
+        this.router = new DrawerRouter();
+
+
     }
 
     render() {
@@ -64,21 +79,13 @@ export default class DrawerScreen extends React.Component<any, IDrawerState> {
                 {/** Navigation buttons */}
 
                 <View style={styles.buttonContainer}>
-                    <View style={styles.button}>
-                        <Text style={styles.buttonText}>Vocab List</Text>
-                    </View>
-                    <View style={styles.button}>
-                        <Text style={styles.buttonText}>Review</Text>
-                    </View>
-                    <View style={styles.button}>
-                        <Text style={styles.buttonText}>Flashcards</Text>
-                    </View>
-                    <View style={styles.button}>
-                        <Text style={styles.buttonText}>Settings</Text>
-                    </View>
-                    <View style={styles.button}>
-                        <Text style={styles.buttonText}>About</Text>
-                    </View>
+
+                    <BasicButton title="Vocab List" viewStyle={styles.button} textStyle={styles.buttonText} onPress={() => { }}></BasicButton>
+                    <BasicButton title="Review" viewStyle={styles.button} textStyle={styles.buttonText} onPress={() => { }}></BasicButton>
+                    <BasicButton title="Flashcards" viewStyle={styles.button} textStyle={styles.buttonText} onPress={() => { }}></BasicButton>
+                    <BasicButton title="Settings" viewStyle={styles.button} textStyle={styles.buttonText} onPress={() => { }}></BasicButton>
+                    <BasicButton title="Logout" viewStyle={styles.button} textStyle={styles.buttonText} onPress={ () =>  this.logOut }></BasicButton>
+
                 </View>
             </View>);
     }
@@ -99,5 +106,9 @@ export default class DrawerScreen extends React.Component<any, IDrawerState> {
 
         // Reset navigation to reload MainScreen
         this.props.navigator.resetTo(NavigationIndex.getScreenConfig({ flashMode: newState.flashMode }, "screens.MainScreen", "Vocabulary Helper"));
+    }
+
+    logOut() {
+        this.router.logOut(this.props.navigator);
     }
 }

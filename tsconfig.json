@@ -13,7 +13,8 @@
         "allowJs": true,
     },
     "exclude": [
-        "node_modules",
+        "node_modules/**/*",
+        "AppData"
     ],
     "include": [
         "src/**/*"

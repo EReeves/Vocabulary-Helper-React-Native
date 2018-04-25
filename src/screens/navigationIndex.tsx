@@ -6,6 +6,7 @@ import ListScreen from "./ListScreen/ListScreen";
 import StartScreen from "./StartScreen/StartScreen";
 import { App } from "../App";
 import palette from "../util/Palette";
+import { navigatorStyle } from "./NavigationStyle";
 
 export class NavigationIndex {
 
@@ -18,7 +19,7 @@ export class NavigationIndex {
     }
 
     // Main Navigator Style
-    public mainNavigatorStyle = { statusBarColor: palette.BackgroundColorDark, navBarTextColor: palette.White, navBarBackgroundColor: palette.BackgroundColor, drawUnderNavBar: false, navBarTranslucent: false, header: { visible: false }, tabBarBackgroundColor: palette.BackgroundDark, tabBarButtonColor: palette.White, tabBarHideShadow: false, tabBarSelectedButtonColor: palette.White, navBarLeftButtonColor: palette.White, navBarButtonColor: palette.White };
+    public static mainNavigatorStyle = navigatorStyle;
 
     // Gets the configurations for different screens, passed in to the navigator when pop/push screens etc.
 

@@ -1,4 +1,4 @@
-const Palette = {
+const palette = {
     BackgroundDark: "#E2E2E2",
     BackgroundLight: "#FFFFFF",
     BackgroundColor: "#D3513D",
@@ -25,4 +25,4 @@ const Palette = {
     BarSizeSmall: 48
 };
 
-export default Palette;
+export default palette;

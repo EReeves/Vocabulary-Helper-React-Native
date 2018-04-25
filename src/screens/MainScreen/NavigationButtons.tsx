@@ -46,7 +46,7 @@ export class NavigationButtons {
 
 
             if (event.id === "searchpress") {
-                this.props.navigator.push(NavigationIndex.getScreenConfig({}, "screens.Search", "Search"));
+                this.props.navigator.push(NavigationIndex.getScreenConfig({}, "screens.ListScreen", "Search"));
             }
         }
     }
