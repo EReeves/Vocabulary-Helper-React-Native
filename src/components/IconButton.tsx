@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import * as React from "react";
 import {
     View,
@@ -10,18 +9,18 @@ import {
 import Icon from "react-native-vector-icons/EvilIcons";
 import palette from "../util/Palette";
 
-interface Props {
+interface IProps {
     name: string;
     onPress: Function;
     color?: string;
     size: number;
     outerStyle?: {};
     innerStyle?: {};
-    borderless?: boolean; //will ripple through outer border by default.
+    borderless?: boolean; // will ripple through outer border by default.
     rippleColor?: string;
 }
-///Full fledged button using a vector icon and a ripple effect.
-export default class IconButton extends React.Component<Props, {}> {
+/// Full fledged button using a vector icon and a ripple effect.
+export default class IconButton extends React.Component<IProps, {}> {
     styles = StyleSheet.create({
         buttonView: {
             backgroundColor: palette.BackgroundLight,
@@ -36,9 +35,9 @@ export default class IconButton extends React.Component<Props, {}> {
     });
 
     render() {
-        //ripple properties
-        let borderless = this.props.borderless || true;
-        let rippleColor = this.props.rippleColor || palette.Black;
+        // ripple properties
+        const borderless = this.props.borderless || true;
+        const rippleColor = this.props.rippleColor || palette.Black;
 
         return (
             <View style={this.props.outerStyle || this.styles.buttonView}>
