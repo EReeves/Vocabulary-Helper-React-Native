@@ -3,6 +3,7 @@ import { Navigation } from "react-native-navigation";
 import MainScreen from "./MainScreen/MainScreen";
 import DrawerScreen from "./DrawerScreen/DrawerScreen";
 import ListScreen from "./ListScreen/ListScreen";
+import StartScreen from "./StartScreen/StartScreen";
 import { App } from "../App";
 import palette from "../util/Palette"
 
@@ -12,6 +13,7 @@ export class NavigationIndex {
              Navigation.registerComponent("screens.MainScreen", () => MainScreen);
              Navigation.registerComponent("screens.DrawerScreen", () => DrawerScreen);
              Navigation.registerComponent("screens.ListScreen", () => ListScreen);
+             Navigation.registerComponent("screens.StartScreen", () => StartScreen);
           }
 
           public static MainScreenConfig(props) {

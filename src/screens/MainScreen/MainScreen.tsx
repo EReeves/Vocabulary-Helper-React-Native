@@ -1,3 +1,4 @@
+//React
 import * as React from "react";
 import {
    StyleSheet,
@@ -8,17 +9,20 @@ import {
    ScrollView,
    TouchableNativeFeedback,
 } from "react-native";
-
+//MainScreen direct dependencies
 import styles from "./Style";
-import Icon from "react-native-vector-icons/EvilIcons";
-import palette from "../../util/Palette";
-import { IconsLoaded, IconsMap } from "../../util/IconMap";
-import IconButton from "../../components/IconButton";
-import { GlobalState } from "../../GlobalState";
 import { States, IMainState } from "./States";
-import * as Animatable from "react-native-animatable";
 import { NavigationButtons } from "./NavigationButtons";
 import { NavBar } from "./NavBar";
+//Utility
+import palette from "../../util/Palette";
+import { IconsLoaded, IconsMap } from "../../util/IconMap";
+//Third party
+import Icon from "react-native-vector-icons/EvilIcons";
+import { GlobalState } from "../../GlobalState";
+import * as Animatable from "react-native-animatable";
+//Generic Components
+import IconButton from "../../components/IconButton";
 
 export default class MainScreen extends React.Component<any, IMainState> {
    constructor(public props) {
