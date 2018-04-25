@@ -3,6 +3,7 @@ import { View, TextInput, Button } from "react-native";
 import firebase, { RNFirebase } from "react-native-firebase";
 import MainScreen from "../MainScreen/MainScreen";
 import { LoadingScreen } from "../LoadingScreen/LoadingScreen";
+import { RegisterScreen } from "../RegisterScreen/RegisterScreen";
 import { Authentication, IAuthInfo } from "../../backend/authentication/Authentication";
 
 
@@ -13,6 +14,7 @@ interface ILoginProperties {
 
 interface ILoginState {
     submitted: boolean;
+    register: boolean;
 }
 
 export default class LoginScreen extends React.Component<ILoginProperties, ILoginState> {
@@ -20,23 +22,31 @@ export default class LoginScreen extends React.Component<ILoginProperties, ILogi
     constructor(public props) {
         super(props);
         this.state = {
-            submitted: false
+            submitted: false,
+            register: false
         };
+
+        this.goRegister = this.goRegister.bind(this);
     }
 
     render() {
+        if (this.state.register) {
+            return <RegisterScreen auth={this.props.auth} userCallback={this.props.userCallback} />;
+        }
+
         if (!this.state.submitted) {
             return (
                 <View>
                     <TextInput placeholder="Email"></TextInput>
                     <TextInput placeholder="Password"></TextInput>
                     <Button title="Login" onPress={this.goLogin.bind(this)}></Button>
+                    <Button title="Register" onPress={() => {this.goRegister(); }} />
                 </View>
 
             );
-        } else {
-            return <LoadingScreen/>;
         }
+
+        return <LoadingScreen />;
     }
 
     goLogin() {
@@ -50,7 +60,12 @@ export default class LoginScreen extends React.Component<ILoginProperties, ILogi
 
         this.props.auth.onLogin(authInfo, this.props.userCallback);
 
-        this.setState({submitted: true});
+        this.setState({ submitted: true, register: false });
+    }
+
+    goRegister() {
+
+        this.setState({ submitted: false, register: true });
     }
 
 }

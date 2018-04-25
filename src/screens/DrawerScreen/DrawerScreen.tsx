@@ -50,7 +50,8 @@ export default class DrawerScreen extends React.Component<any, IDrawerState> {
 
         this.router = new DrawerRouter();
 
-
+        // Bind this to callback methods
+        this.logOut = this.logOut.bind(this);
     }
 
     render() {
@@ -84,7 +85,7 @@ export default class DrawerScreen extends React.Component<any, IDrawerState> {
                     <BasicButton title="Review" viewStyle={styles.button} textStyle={styles.buttonText} onPress={() => { }}></BasicButton>
                     <BasicButton title="Flashcards" viewStyle={styles.button} textStyle={styles.buttonText} onPress={() => { }}></BasicButton>
                     <BasicButton title="Settings" viewStyle={styles.button} textStyle={styles.buttonText} onPress={() => { }}></BasicButton>
-                    <BasicButton title="Logout" viewStyle={styles.button} textStyle={styles.buttonText} onPress={ () =>  this.logOut }></BasicButton>
+                    <BasicButton title="Logout" viewStyle={styles.button} textStyle={styles.buttonText} onPress={ () => this.logOut }></BasicButton>
 
                 </View>
             </View>);

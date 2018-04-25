@@ -30,7 +30,7 @@ export default class StartScreen extends React.Component<IStartProperties, IStar
         super(props);
         this.state = {
             loading: true,
-            user: undefined,
+            user: undefined
         };
 
         this.auth = new Authentication();

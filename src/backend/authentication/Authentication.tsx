@@ -22,7 +22,6 @@ export class Authentication {
 
                 userCallback(user);
 
-
             })
             .catch((error) => {
                 const { code, message } = error;
@@ -32,13 +31,14 @@ export class Authentication {
             });
     }
 
-    onRegister(state: IAuthInfo) {
+    onRegister(state: IAuthInfo, userCallback: (user: RNFirebase.UserCredential) => void) {
         const { email, password } = state;
-        firebase.auth().createUserWithEmailAndPassword(email, password)
+        firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(email, password)
             .then((user) => {
                 // If you need to do anything with the user, do it here
                 // The user will be logged in automatically by the
                 // `onAuthStateChanged` listener we set up in App.js earlier
+                userCallback(user);
             })
             .catch((error) => {
                 const { code, message } = error;
