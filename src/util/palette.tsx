@@ -13,16 +13,20 @@ const palette = {
     Elevation: 2,
     Margin: 10,
 
-    //Number constants
+    // Number constants
     Two: 2,
     Five: 5,
     Ten: 10,
     Twenty: 20,
     Thirty: 30,
 
-    //Size constants
+    // Size constants
     BarSize: 58,
-    BarSizeSmall: 48
+    BarSizeSmall: 48,
+    IconSizeTiny: 20,
+    IconSizeSmall: 60,
+    IconSize: 80,
+    IconSizeHuge: 100
 };
 
 export default palette;
