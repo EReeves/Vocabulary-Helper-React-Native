@@ -34,7 +34,8 @@ export class WordList {
             meaning: "Hello",
             pronunciation: "/bɒn.ˈʒʊə/;",
             hint: "The greeting..",
-            example: "Bonjour et Bonsoir"
+            example: "Bonjour et Bonsoir",
+            starred: false
         });
 
         const nihao = new Word({
@@ -42,7 +43,8 @@ export class WordList {
             meaning: "hello",
             pronunciation: "nĭ hăo",
             hint: "The greeting..",
-            example: "你好，今天过得怎么样？"
+            example: "你好，今天过得怎么样？",
+            starred: true
         });
 
         wordList.words.push(bonjour);

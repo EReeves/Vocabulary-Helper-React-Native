@@ -10,6 +10,7 @@ export interface IMainState {
     currentWord?: Word;
     wordData?: ReadonlyArray<any>;
     headerTakeUpSpace?: boolean;
+    starred?: boolean;
 }
 
 // The different states the MainScreen can be in.

@@ -153,6 +153,16 @@ const styles = StyleSheet.create({
     invisible: {
         height: 0,
         width: 0
+    },
+    headerStarView: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+        justifyContent: "center"
+    },
+    headerStar: {
+        margin: palette.Margin,
+        marginRight: 0,
+        fontSize: 24,
     }
 });
 

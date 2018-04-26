@@ -57,6 +57,7 @@ export default class MainScreen extends React.Component<any, IMainState> {
         this.toRevealedCard = this.toRevealedCard.bind(this);
         this.toNextItem = this.toNextItem.bind(this);
         this.toPreviousItem = this.toPreviousItem.bind(this);
+        this.toggleStar = this.toggleStar.bind(this);
     }
 
     /** Mode/State switching */
@@ -75,26 +76,32 @@ export default class MainScreen extends React.Component<any, IMainState> {
 
     toNextItem() {
         this.wordList.next();
+        this.onWordNav();
+    }
+
+    toPreviousItem() {
+        this.wordList.prev();
+        this.onWordNav();
+    }
+
+    onWordNav() {
         this.setState({
             currentWord: this.wordList.currentWord,
             wordData: this.wordList.renderData(),
-            reveal: false
+            reveal: false,
+            starred: this.wordList.currentWord.starred
         });
+
         if (this.headerTextRef !== undefined) {
             this.headerTextRef.transition({ opacity: 0 }, { opacity: 1 });
         }
     }
 
-    toPreviousItem() {
-        this.wordList.prev();
-        this.setState({
-            currentWord: this.wordList.currentWord,
-            wordData: this.wordList.renderData(),
-            reveal: false
-        });
-        if (this.headerTextRef !== undefined) {
-            this.headerTextRef.transition({ opacity: 0 }, { opacity: 1 });
-        }
+    toggleStar() {
+        const starState = this.state.starred !== undefined ? !this.state.starred : true;
+
+        this.setState({ starred: starState });
+        this.state.currentWord.starred = starState;
     }
 
     /** Mode/State switching END */
@@ -222,7 +229,9 @@ export default class MainScreen extends React.Component<any, IMainState> {
         if (!this.state.editMode) {
             return (<NavBar
                 leftCallback={() => this.toPreviousItem}
-                rightCallback={() => this.toNextItem} />);
+                rightCallback={() => this.toNextItem}
+                starred={this.state.starred}
+                starCallback={() => this.toggleStar} />);
         }
         return; // Don't want it in edit mode.
     }
@@ -242,6 +251,9 @@ export default class MainScreen extends React.Component<any, IMainState> {
         if (this.state.editMode) {
             style = this.state.headerTakeUpSpace ? style : this.state.mutable.headerStyle;
         }
+
+        const star = this.state.starred ? "★" : "  ";
+        const blank = "  ";
 
         return (
             <Animatable.View
@@ -266,15 +278,19 @@ export default class MainScreen extends React.Component<any, IMainState> {
                     this.headerRef.transition({ height: 220 }, { height: 0 });
 
                 }}>
+                <View style={styles.headerStarView}>
+                    <Text style={styles.headerStar}>{blank}</Text> 
                 <Animatable.Text
                     ref={handleHeaderTextRef => this.headerTextRef = handleHeaderTextRef}
                     duration={palette.AnimationDefaultDuration}
                     transition="opacity" style={styles.characterText}>{this.state.currentWord.header}</Animatable.Text>
-                <View style={styles.tagView}>
-                    <Text style={styles.tagText}>MyWords</Text>
-                    <IconButton name="plus" size={palette.IconSizeTiny} onPress={() => { }} />
+                <Text style={styles.headerStar}>{star}</Text>
                 </View>
-            </Animatable.View>
+            <View style={styles.tagView}>
+                <Text style={styles.tagText}>MyWords</Text>
+                <IconButton name="plus" size={palette.IconSizeTiny} onPress={() => { }} />
+            </View>
+            </Animatable.View >
         );
 
     }

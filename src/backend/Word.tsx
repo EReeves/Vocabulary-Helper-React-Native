@@ -10,6 +10,8 @@ export class Word {
     pronunciation?: string;
     hint?: string;
     example?: string;
+    starred: boolean;
+    
 
     constructor(init?: Partial<Word>) {
         Object.assign(this, init);
