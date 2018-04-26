@@ -40,7 +40,7 @@ export default class IconButton extends React.Component<IProps, {}> {
         const rippleColor = this.props.rippleColor || palette.Black;
 
         return (
-            <View style={this.props.outerStyle || this.styles.buttonView}>
+            <View >
                 <TouchableNativeFeedback
                     onPress={this.props.onPress()}
                     background={TouchableNativeFeedback.Ripple(
@@ -48,7 +48,7 @@ export default class IconButton extends React.Component<IProps, {}> {
                         borderless
                     )}
                 >
-                    <View style={this.props.innerStyle || this.styles.iconView}>
+                    <View style={this.props.outerStyle || this.styles.buttonView}>
                         <Icon
                             name={this.props.name}
                             color={this.props.color || palette.Text}

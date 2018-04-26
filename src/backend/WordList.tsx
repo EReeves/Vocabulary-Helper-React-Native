@@ -50,7 +50,7 @@ export class WordList {
     // Go to next word, wrap to the first item if none left.
     public next(): Word {
         this.currentWordPosition++;
-        if (this.currentWordPosition > this.words.length) {
+        if (this.currentWordPosition > this.words.length - 1) {
             this.currentWordPosition = 0;
         }
         this.currentWord = this.words[this.currentWordPosition];

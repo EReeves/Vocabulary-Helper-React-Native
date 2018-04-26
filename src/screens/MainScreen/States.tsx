@@ -1,10 +1,15 @@
+import { Word } from "../../backend/Word";
+
 export interface IMainState {
     flashMode: boolean;
     modeIcon: string;
     modeText: string;
-    mutable: any;
+    mutable?: any;
     reveal: boolean;
     editMode: boolean;
+    currentWord?: Word;
+    wordData?: ReadonlyArray<any>;
+    headerTakeUpSpace?: boolean;
 }
 
 // The different states the MainScreen can be in.
@@ -40,9 +45,10 @@ export class States {
         flashMode: false,
         modeIcon: "eye",
         modeText: "Review Mode",
-        mutable: {headerTakeUpSpace: true},
-        reveal: false,
-        editMode: true
+        mutable: {},
+        reveal: true,
+        editMode: true,
+        headerTakeUpSpace: true
     };
 
 

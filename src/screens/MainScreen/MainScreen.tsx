@@ -42,14 +42,20 @@ export default class MainScreen extends React.Component<any, IMainState> {
 
         // Set up
         const _ = new NavigationButtons(props);
-        this.state = States.GetMode(props.flashMode);
         this.iconMap = new IconMap();
         this.wordList = WordList.load(false);
+
+        // Set state
+        const state = States.GetMode(props.flashMode);
+        state.currentWord = this.wordList.currentWord;
+        state.wordData = this.wordList.renderData();
+        this.state = state;
 
         // Bind methods to .this
         this.toReviewMode = this.toReviewMode.bind(this);
         this.toEditMode = this.toEditMode.bind(this);
         this.toRevealedCard = this.toRevealedCard.bind(this);
+        this.toNextItem = this.toNextItem.bind(this);
     }
 
     /** Mode/State switching */
@@ -58,12 +64,21 @@ export default class MainScreen extends React.Component<any, IMainState> {
         this.setState(States.flashModeRevealed);
     }
 
-    toEditMode() {
+    toEditMode = () => {
         this.setState(States.editMode);
     }
 
     toReviewMode() {
         this.setState(States.reviewMode);
+    }
+
+    toNextItem() {
+        this.wordList.next();
+        this.setState({
+            currentWord: this.wordList.currentWord,
+            wordData: this.wordList.renderData(),
+            reveal: false
+        });
     }
 
     /** Mode/State switching END */
@@ -92,23 +107,26 @@ export default class MainScreen extends React.Component<any, IMainState> {
 
     // Individual list item elements.
     listItem(head: string, footer: string) {
-        if (!this.state.editMode) {
-            return (
-                <View style={styles.listItemView}>
-                    <Text style={styles.listItemLeft}>{head + ":"}</Text>
-                    <Text style={styles.listItemRight}>{footer}</Text>
-                </View>
-            );
-        }
 
-        // Edit mode
-        return (
-            <View style={styles.listItemView}>
+        const editMode = this.state.editMode;
+
+        return (editMode ?
+            // Edit mode
+
+            (<View style={styles.listItemView}>
                 <Text style={styles.listItemLeft}>{head + ":"}</Text>
                 <TextInput style={styles.listItemRight}>{footer}</TextInput>
-            </View>
-        );
+            </View>)
+
+            :
+
+            (<View style={styles.listItemView}>
+                <Text style={styles.listItemLeft}>{head + ":"}</Text>
+                <Text style={styles.listItemRight}>{footer}</Text>
+            </View>));
+
     }
+
 
     // Gets the middle view depending on the current mode.
     middleView() {
@@ -116,20 +134,16 @@ export default class MainScreen extends React.Component<any, IMainState> {
         if (!this.props.flashMode || this.state.reveal) {
             view = (
                 <Animatable.View
-                    animation="bounceInRight"
-                    useNativeDriver={
-                        true // View with details.
-                    }
-                    duration={500}
+                    animation="slideInRight"
+                    useNativeDriver={true}
+                    duration={300}
                     style={styles.bottomInfo}>
-                    <KeyboardAvoidingView
-                        behavior="padding"
-                    >
-                        <FlatList
-                            data={this.wordList.renderData()}
-                            renderItem={({ item }) => this.listItem(item.key, item.value)}
-                        />
-                    </KeyboardAvoidingView>
+
+                    <FlatList
+                        data={this.state.wordData}
+                        extraData={this.state.editMode}
+                        renderItem={({ item }) => this.listItem(item.key, item.value)}
+                    />
                     {this.editButtons()}
                 </Animatable.View>
             );
@@ -137,9 +151,9 @@ export default class MainScreen extends React.Component<any, IMainState> {
             // View with a question mark button.
             view = (
                 <Animatable.View
-                    animation="fadeIn"
+                    animation="slideInLeft"
                     useNativeDriver={true}
-                    duration={500}
+                    duration={300}
                     style={styles.questionView}>
                     <IconButton
                         name="question"
@@ -182,7 +196,7 @@ export default class MainScreen extends React.Component<any, IMainState> {
                     name="arrow-right"
                     size={palette.IconSize}
                     outerStyle={styles.buttonView}
-                    onPress={() => { }}
+                    onPress={() => this.toNextItem}
                 />
             </View>
         );
@@ -195,10 +209,8 @@ export default class MainScreen extends React.Component<any, IMainState> {
         return; // Don't want it in edit mode.
     }
 
-    // References needed for header animation. 
-    // Syntax is a little strange but this is how it's done according to the docs.
+    // Reference needed for header animation. 
     headerRef;
-    handleHeaderRef = ref => this.headerRef = ref;
 
     // The header view, contains the vocab item and tags.
     header() {
@@ -209,7 +221,7 @@ export default class MainScreen extends React.Component<any, IMainState> {
 
         // Removes styling on the element after it disappears by animation.
         if (this.state.editMode) {
-            style = this.state.mutable.headerTakeUpSpace ? style : this.state.mutable.headerStyle;
+            style = this.state.headerTakeUpSpace ? style : this.state.mutable.headerStyle;
         }
 
         return (
@@ -218,20 +230,30 @@ export default class MainScreen extends React.Component<any, IMainState> {
                 useNativeDriver={false} // Native animations wont support height :(
                 duration={400}
                 style={style}
-                ref={this.handleHeaderRef}
+                ref={handleHeaderRef => this.headerRef = handleHeaderRef}
+
                 onAnimationEnd={() => {
-                    // Theres no great way to make this disappear. But this height estimation looks pretty good when in motion on any screen.
-                    // First erase the style, removes the margins etc and replaces it with a static height.
-                    this.setState({ mutable: { headerTakeUpSpace: false, headerStyle: { height: 220 } } });
-                    // Then transition away smoothly.
+
+                    if (this.headerRef === null) return;
+
+                    // Full update
+                    const newState = Object.assign({}, this.state) as any;
+                    newState.headerTakeUpSpace = false;
+                    newState.mutable = {
+                        headerStyle: { height: 220 }
+                    };
+                    this.setState(newState);
+
                     this.headerRef.transition({ height: 220 }, { height: 0 });
+
                 }}>
-                <Text style={styles.characterText}>{this.wordList.currentWord.header}</Text>
+                <Text style={styles.characterText}>{this.state.currentWord.header}</Text>
                 <View style={styles.tagView}>
                     <Text style={styles.tagText}>Chinese</Text>
                     <IconButton name="plus" size={palette.IconSizeTiny} onPress={() => { }} />
                 </View>
             </Animatable.View>
         );
+
     }
 }

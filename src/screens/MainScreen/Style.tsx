@@ -92,7 +92,9 @@ const styles = StyleSheet.create({
         marginTop: palette.Thirty,
         flexDirection: "row",
         flex: 6,
-        margin: 30,
+        margin: 40,
+        paddingTop: 30,
+        paddingBottom: 30,
         justifyContent: "center",
         alignItems: "center",
         alignContent: "center",
@@ -104,13 +106,13 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     questionView: {
-        flex: 3,
+        flex: 5,
         borderRadius: palette.CornerRadius,
         justifyContent: "center",
         alignItems: "center",
         alignContent: "center",
         margin: palette.Margin,
-        marginTop: 0,
+  
         shadowColor: "#000",
         shadowRadius: palette.Two,
         elevation: palette.Elevation,
