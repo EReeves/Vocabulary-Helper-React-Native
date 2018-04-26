@@ -52,18 +52,23 @@ export default class DrawerScreen extends React.Component<any, IDrawerState> {
 
         // Bind this to callback methods
         this.logOut = this.logOut.bind(this);
+        this.toggleMode = this.toggleMode.bind(this);
+        this.goFlashcard = this.goFlashcard.bind(this);
+        this.goReview = this.goReview.bind(this);
     }
 
     render() {
 
         // Need a dynamic style to set opacity from animation
         const topStyle = DynamicStyles.topBar(this.state.mutable.fadeAnim);
+        const tru = true;
+        const fal = false;
 
         return (
             <View style={styles.container}>
                 <View style={styles.topBar}>
                     <Animated.View style={topStyle}>
-                        <TouchableNativeFeedback onPress={this.toggleMode} background={
+                        <TouchableNativeFeedback onPress={() => { this.toggleMode(undefined); }} background={
                             TouchableNativeFeedback.Ripple(palette.Black, true)
                             // Ripple color // Ripple outside bounds
                         }>
@@ -81,21 +86,21 @@ export default class DrawerScreen extends React.Component<any, IDrawerState> {
 
                 <View style={styles.buttonContainer}>
 
-                    <BasicButton title="Vocab List" viewStyle={styles.button} textStyle={styles.buttonText} onPress={() => { }}></BasicButton>
-                    <BasicButton title="Review" viewStyle={styles.button} textStyle={styles.buttonText} onPress={() => { }}></BasicButton>
-                    <BasicButton title="Flashcards" viewStyle={styles.button} textStyle={styles.buttonText} onPress={() => { }}></BasicButton>
+                    <BasicButton title="Search" viewStyle={styles.button} textStyle={styles.buttonText} onPress={() => { }}></BasicButton>
+                    <BasicButton title="Review" viewStyle={styles.button} textStyle={styles.buttonText} onPress={() => this.goReview}></BasicButton>
+                    <BasicButton title="Flashcards" viewStyle={styles.button} textStyle={styles.buttonText} onPress={() => this.goFlashcard}></BasicButton>
                     <BasicButton title="Settings" viewStyle={styles.button} textStyle={styles.buttonText} onPress={() => { }}></BasicButton>
-                    <BasicButton title="Logout" viewStyle={styles.button} textStyle={styles.buttonText} onPress={ () => this.logOut }></BasicButton>
+                    <BasicButton title="Logout" viewStyle={styles.button} textStyle={styles.buttonText} onPress={() => this.logOut}></BasicButton>
 
                 </View>
             </View>);
     }
 
-    // Toggle between flashcard and review mode.
-    toggleMode = () => {
+    // Toggle between flashcard and review mode. setMode optional parameter to specify the mode rather than toggle from current.
+    toggleMode = (setMode?: boolean) => {
 
         // Change to opposite state
-        const newState = States.GetMode(!this.state.flashMode);
+        const newState = setMode !== undefined ? Object.assign({}, States.GetMode(setMode)) : States.GetMode(!this.state.flashMode);
         newState.mutable.fadeAnim = new Animated.Value(0);
         this.setState(newState);
 
@@ -107,6 +112,14 @@ export default class DrawerScreen extends React.Component<any, IDrawerState> {
 
         // Reset navigation to reload MainScreen
         this.props.navigator.resetTo(NavigationIndex.getScreenConfig({ flashMode: newState.flashMode }, "screens.MainScreen", "Vocabulary Helper"));
+    }
+
+    goFlashcard() {
+        this.toggleMode(true);
+    }
+
+    goReview() {
+        this.toggleMode(false);
     }
 
     logOut() {

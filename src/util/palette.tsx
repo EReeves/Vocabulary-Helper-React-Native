@@ -27,6 +27,9 @@ const palette = {
     IconSizeSmall: 60,
     IconSize: 80,
     IconSizeHuge: 100
+
+    //Animation
+    AnimationDefaultDuration: 300
 };
 
 export default palette;

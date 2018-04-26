@@ -56,6 +56,7 @@ export default class MainScreen extends React.Component<any, IMainState> {
         this.toEditMode = this.toEditMode.bind(this);
         this.toRevealedCard = this.toRevealedCard.bind(this);
         this.toNextItem = this.toNextItem.bind(this);
+        this.toPreviousItem = this.toPreviousItem.bind(this);
     }
 
     /** Mode/State switching */
@@ -79,6 +80,21 @@ export default class MainScreen extends React.Component<any, IMainState> {
             wordData: this.wordList.renderData(),
             reveal: false
         });
+        if (this.headerTextRef !== undefined) {
+            this.headerTextRef.transition({ opacity: 0 }, { opacity: 1 });
+        }
+    }
+
+    toPreviousItem() {
+        this.wordList.prev();
+        this.setState({
+            currentWord: this.wordList.currentWord,
+            wordData: this.wordList.renderData(),
+            reveal: false
+        });
+        if (this.headerTextRef !== undefined) {
+            this.headerTextRef.transition({ opacity: 0 }, { opacity: 1 });
+        }
     }
 
     /** Mode/State switching END */
@@ -89,7 +105,7 @@ export default class MainScreen extends React.Component<any, IMainState> {
             <Animatable.View
                 animation="fadeIn"
                 useNativeDriver={true}
-                duration={500} // TODO: Store animation durations somewhere better.
+                duration={palette.AnimationDefaultDuration}
                 style={styles.container}>
                 {/*Main card with vocab item*/}
                 {this.header()}
@@ -136,7 +152,7 @@ export default class MainScreen extends React.Component<any, IMainState> {
                 <Animatable.View
                     animation="slideInRight"
                     useNativeDriver={true}
-                    duration={300}
+                    duration={palette.AnimationDefaultDuration}
                     style={styles.bottomInfo}>
 
                     <FlatList
@@ -153,7 +169,7 @@ export default class MainScreen extends React.Component<any, IMainState> {
                 <Animatable.View
                     animation="slideInLeft"
                     useNativeDriver={true}
-                    duration={300}
+                    duration={palette.AnimationDefaultDuration}
                     style={styles.questionView}>
                     <IconButton
                         name="question"
@@ -204,13 +220,16 @@ export default class MainScreen extends React.Component<any, IMainState> {
 
     navBar() {
         if (!this.state.editMode) {
-            return (<NavBar />);
+            return (<NavBar
+                leftCallback={() => this.toPreviousItem}
+                rightCallback={() => this.toNextItem} />);
         }
         return; // Don't want it in edit mode.
     }
 
-    // Reference needed for header animation. 
+    // References needed for header animation. 
     headerRef;
+    headerTextRef;
 
     // The header view, contains the vocab item and tags.
     header() {
@@ -228,7 +247,7 @@ export default class MainScreen extends React.Component<any, IMainState> {
             <Animatable.View
                 animation={anim}
                 useNativeDriver={false} // Native animations wont support height :(
-                duration={400}
+                duration={palette.AnimationDefaultDuration}
                 style={style}
                 ref={handleHeaderRef => this.headerRef = handleHeaderRef}
 
@@ -247,9 +266,12 @@ export default class MainScreen extends React.Component<any, IMainState> {
                     this.headerRef.transition({ height: 220 }, { height: 0 });
 
                 }}>
-                <Text style={styles.characterText}>{this.state.currentWord.header}</Text>
+                <Animatable.Text
+                    ref={handleHeaderTextRef => this.headerTextRef = handleHeaderTextRef}
+                    duration={palette.AnimationDefaultDuration}
+                    transition="opacity" style={styles.characterText}>{this.state.currentWord.header}</Animatable.Text>
                 <View style={styles.tagView}>
-                    <Text style={styles.tagText}>Chinese</Text>
+                    <Text style={styles.tagText}>MyWords</Text>
                     <IconButton name="plus" size={palette.IconSizeTiny} onPress={() => { }} />
                 </View>
             </Animatable.View>

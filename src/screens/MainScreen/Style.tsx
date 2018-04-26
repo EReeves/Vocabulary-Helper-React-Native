@@ -92,15 +92,16 @@ const styles = StyleSheet.create({
         marginTop: palette.Thirty,
         flexDirection: "row",
         flex: 6,
-        margin: 40,
+        margin: 30,
         paddingTop: 30,
-        paddingBottom: 30,
+        paddingBottom: 30
+        ,
         justifyContent: "center",
         alignItems: "center",
         alignContent: "center",
     },
     infoButtonHolder: {
-    
+
         marginBottom: palette.Thirty,
         flexDirection: "row",
         justifyContent: "center"
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         alignContent: "center",
         margin: palette.Margin,
-  
+
         shadowColor: "#000",
         shadowRadius: palette.Two,
         elevation: palette.Elevation,
@@ -138,6 +139,7 @@ const styles = StyleSheet.create({
         backgroundColor: palette.BackgroundColor,
         flexDirection: "row",
         justifyContent: "space-between",
+        alignItems: "center",
         elevation: palette.Elevation,
         shadowRadius: palette.Two,
         paddingLeft: palette.Twenty,

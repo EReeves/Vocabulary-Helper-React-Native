@@ -31,12 +31,18 @@ export class WordList {
 
         const bonjour = new Word({
             header: "bonjour",
-            meaning: "hello"
+            meaning: "Hello",
+            pronunciation: "/bɒn.ˈʒʊə/;",
+            hint: "The greeting..",
+            example: "Bonjour et Bonsoir"
         });
 
         const nihao = new Word({
-            header: "nihao",
-            meaning: "hello"
+            header: "你好",
+            meaning: "hello",
+            pronunciation: "nĭ hăo",
+            hint: "The greeting..",
+            example: "你好，今天过得怎么样？"
         });
 
         wordList.words.push(bonjour);
@@ -61,7 +67,7 @@ export class WordList {
     public prev(): Word {
         this.currentWordPosition--;
         if (this.currentWordPosition < 0) {
-            this.words.length;
+            this.currentWordPosition = this.words.length - 1;
         }
         this.currentWord = this.words[this.currentWordPosition];
         return this.currentWord;
