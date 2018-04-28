@@ -29,7 +29,7 @@ export class NavigationButtons {
             });
         });
 
-        props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+        props.navigator.addOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
 
     onNavigatorEvent(event) {

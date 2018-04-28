@@ -4,6 +4,7 @@ export interface IWordRenderData {
 }
 
 export class Word {
+    id: number;
     header: string;
     tags?: string[];
     meaning: string;
@@ -17,12 +18,15 @@ export class Word {
         Object.assign(this, init);
     }
 
-    renderData?(): IWordRenderData {
-        return [
+    renderData?(isEditData: boolean): IWordRenderData {
+        let arr = isEditData ? [{key: "Word", value: this.header || ""}] : [];
+        arr = arr.concat(
+        [
             { key: "Pronunciation", value: this.pronunciation || "" },
-            { key: "Meaning", value: this.meaning },
-            { key: "Hint", value: this.hint || "" },
+            { key: "Meaning", value: this.meaning || "" },
+            { key: "Note", value: this.hint || "" },
             { key: "Example", value: this.example || "" },
-        ];
+        ]);
+        return arr;
     }
 }

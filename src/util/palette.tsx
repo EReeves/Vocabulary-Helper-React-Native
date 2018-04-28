@@ -6,6 +6,7 @@ const palette = {
     White: "#FFF",
     Black: "#000",
     ActiveRed: "#E82C0C",
+    DarkGrey: "#555555",
 
     Highlight: "#8E756F",
     Text: "#555",

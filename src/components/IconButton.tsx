@@ -44,7 +44,7 @@ export default class IconButton extends React.Component<IProps, {}> {
     render() {
         // ripple properties
         const borderless = this.props.borderless || true;
-        const rippleColor = this.props.rippleColor || palette.Black;
+        const rippleColor = this.props.rippleColor || palette.DarkGrey;
 
         return (
             <View >

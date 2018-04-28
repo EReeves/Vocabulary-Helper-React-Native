@@ -30,6 +30,7 @@ export class WordList {
         // TODO: populate;
 
         const bonjour = new Word({
+            id: 0,
             header: "bonjour",
             meaning: "Hello",
             pronunciation: "/bɒn.ˈʒʊə/;",
@@ -39,6 +40,7 @@ export class WordList {
         });
 
         const nihao = new Word({
+            id: 1,
             header: "你好",
             meaning: "hello",
             pronunciation: "nĭ hăo",
@@ -65,6 +67,10 @@ export class WordList {
         return this.currentWord;
     }
 
+    public setWord(id: number, word: Word) {
+        this.words[id] = word;
+    }
+
     // Go to previous word, wrap to the last word if at the start.
     public prev(): Word {
         this.currentWordPosition--;
@@ -75,8 +81,8 @@ export class WordList {
         return this.currentWord;
     }
 
-    public renderData(): ReadonlyArray<any> {
-        return this.currentWord.renderData() as ReadonlyArray<any>;
+    public renderData(isEditMode: boolean): ReadonlyArray<any> {
+        return this.currentWord.renderData(isEditMode) as ReadonlyArray<any>;
     }
 
 }

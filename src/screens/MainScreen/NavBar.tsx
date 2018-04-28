@@ -5,6 +5,7 @@ import {
     Text,
     TouchableOpacity,
     StyleSheet,
+    Linking
 } from "react-native";
 import Icon from "react-native-vector-icons/EvilIcons";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
@@ -35,7 +36,11 @@ export class NavBar extends React.Component<INavBarProps, {}> {
             <IconButton name={starname} color={palette.White} size={iconSize - 5} onPress={this.props.starCallback} ionIcon={true} />
             <IconButton name="chevron-left" color={palette.White} size={iconSize} outerStyle={styles.bottomBarIcon} onPress={this.props.leftCallback} />
             <IconButton name="chevron-right" color={palette.White} size={iconSize} outerStyle={styles.bottomBarIcon} onPress={this.props.rightCallback} />
-            <IconButton name="external-link" color={palette.White} size={iconSize} outerStyle={styles.bottomBarIcon} onPress={this.props.starCallback} />
+            <IconButton name="external-link" color={palette.White} size={iconSize} outerStyle={styles.bottomBarIcon} onPress={() => this.openUrl} />
         </View>;
+    }
+
+    openUrl() {
+        Linking.openURL("https://translate.google.com/#auto/en/Hello");
     }
 }

@@ -9,7 +9,8 @@ import {
     ScrollView,
     TouchableNativeFeedback,
     TextInput,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    BackHandler,
 } from "react-native";
 
 // MainScreen direct dependencies
@@ -25,8 +26,10 @@ import { IconMap } from "../../util/IconMap";
 // Third party
 import Icon from "react-native-vector-icons/EvilIcons";
 import * as Animatable from "react-native-animatable";
+import RNExitApp from "react-native-exit-app";
 
 // Generic Components
+import FloatingSideButton from "../../components/FloatingSideButton";
 import IconButton from "../../components/IconButton";
 import { WordList } from "../../backend/WordList";
 
@@ -48,9 +51,13 @@ export default class MainScreen extends React.Component<any, IMainState> {
         // Set state
         const state = States.GetMode(props.flashMode);
         state.currentWord = this.wordList.currentWord;
-        state.wordData = this.wordList.renderData();
+        state.wordData = this.wordList.renderData(false);
         this.state = state;
 
+        // onNavigatorEvent
+        this.props.navigator.addOnNavigatorEvent((event) => this.onNavigatorEvent(event));
+        // Back button handler
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
         // Bind methods to .this
         this.toReviewMode = this.toReviewMode.bind(this);
         this.toEditMode = this.toEditMode.bind(this);
@@ -58,6 +65,7 @@ export default class MainScreen extends React.Component<any, IMainState> {
         this.toNextItem = this.toNextItem.bind(this);
         this.toPreviousItem = this.toPreviousItem.bind(this);
         this.toggleStar = this.toggleStar.bind(this);
+        this.onTextInput = this.onTextInput.bind(this);
     }
 
     /** Mode/State switching */
@@ -67,7 +75,9 @@ export default class MainScreen extends React.Component<any, IMainState> {
     }
 
     toEditMode = () => {
-        this.setState(States.editMode);
+        const newState = Object.assign({}, States.editMode);
+        (newState.wordData as any) = this.state.currentWord.renderData(true);
+        this.setState(newState);
     }
 
     toReviewMode() {
@@ -87,7 +97,7 @@ export default class MainScreen extends React.Component<any, IMainState> {
     onWordNav() {
         this.setState({
             currentWord: this.wordList.currentWord,
-            wordData: this.wordList.renderData(),
+            wordData: this.wordList.renderData(this.state.editMode),
             reveal: false,
             starred: this.wordList.currentWord.starred
         });
@@ -104,25 +114,101 @@ export default class MainScreen extends React.Component<any, IMainState> {
         this.state.currentWord.starred = starState;
     }
 
+    onTextInput(key: string, text: string) {
+
+        console.log(key + text);
+        const cw = this.state.currentWord;
+
+        switch (key) {
+            case "Word":
+                cw.header = text;
+                break;
+            case "Pronunciation":
+                cw.pronunciation = text;
+                break;
+            case "Meaning":
+                cw.meaning = text;
+                break;
+            case "Note":
+                cw.hint = text;
+                break;
+            case "Example":
+                cw.example = text;
+                break;
+        }
+        this.wordList.setWord(cw.id, cw);
+        const data = cw.renderData(true) as any;
+        const newState = Object.assign({}, this.state) as IMainState;
+        newState.currentWord = cw;
+        newState.wordData = data;
+        this.setState(newState);
+    }
+
     /** Mode/State switching END */
 
+    /** Component overrides */
+
+    componentWillMount() {
+    }
+
+    componentWillUnmount() {
+
+    }
+
+    onNavigatorEvent(event) {
+        console.log(event);
+        if (event.id === "backWithCheck" || event.id === "backPress") {
+            this.handleBackButtonClick();
+        }
+    }
+
+    /** Component overrides END */
+
+    handleBackButtonClick() {
+        if (this.state.editMode) {
+            const newState = Object.assign({}, States.GetMode(this.state.flashMode));
+            newState.editMode = false;
+            newState.reveal = false;
+            this.setState(newState);
+            console.log("asd");
+            return;
+        }
+        if (!this.state.reveal) {
+            const newState = Object.assign({}, this.state) as IMainState;
+            newState.reveal = true;
+            this.setState(newState);
+            return;
+        }
+
+        RNExitApp.exitApp();
+    }
 
     render() {
         return (
-            <Animatable.View
-                animation="fadeIn"
-                useNativeDriver={true}
-                duration={palette.AnimationDefaultDuration}
-                style={styles.container}>
-                {/*Main card with vocab item*/}
-                {this.header()}
+            <View style={styles.container}>
+                <Animatable.View
+                    animation="fadeIn"
+                    useNativeDriver={true}
+                    duration={palette.AnimationDefaultDuration}
+                    style={styles.container}
+                >
 
-                {/*Info below the vocab item*/}
-                {this.middleView()}
 
-                {/*Navigation like bar docked at the bottom*/}
-                {this.navBar()}
-            </Animatable.View>
+
+                    {/*Main card with vocab item*/}
+                    {this.header()}
+
+                    {/*Info below the vocab item*/}
+                    {this.middleView()}
+
+                    {/*Navigation like bar docked at the bottom*/}
+                    {this.navBar()}
+
+
+
+                </Animatable.View>
+
+            </View>
         );
     }
 
@@ -136,9 +222,11 @@ export default class MainScreen extends React.Component<any, IMainState> {
         return (editMode ?
             // Edit mode
 
-            (<View style={styles.listItemView}>
+            (<View style={styles.listItemViewEdit}>
                 <Text style={styles.listItemLeft}>{head + ":"}</Text>
-                <TextInput style={styles.listItemRight}>{footer}</TextInput>
+                <TextInput
+                    onSubmitEditing={(text) => this.onTextInput(head, text.nativeEvent.text)}
+                    style={styles.listItemRight}>{footer}</TextInput>
             </View>)
 
             :
@@ -154,6 +242,7 @@ export default class MainScreen extends React.Component<any, IMainState> {
     // Gets the middle view depending on the current mode.
     middleView() {
         let view;
+        const bottomInnerStyle = this.state.editMode ? {} : styles.bottomInfoInner;
         if (!this.props.flashMode || this.state.reveal) {
             view = (
                 <Animatable.View
@@ -161,13 +250,17 @@ export default class MainScreen extends React.Component<any, IMainState> {
                     useNativeDriver={true}
                     duration={palette.AnimationDefaultDuration}
                     style={styles.bottomInfo}>
-
-                    <FlatList
-                        data={this.state.wordData}
-                        extraData={this.state.editMode}
-                        renderItem={({ item }) => this.listItem(item.key, item.value)}
-                    />
+                    <View style={bottomInnerStyle}>
+                        <KeyboardAvoidingView>
+                            <FlatList
+                                data={this.state.wordData}
+                                extraData={this.state.editMode}
+                                renderItem={({ item }) => this.listItem(item.key, item.value)}
+                            />
+                        </KeyboardAvoidingView>
+                    </View>
                     {this.editButtons()}
+
                 </Animatable.View>
             );
         } else {
@@ -195,13 +288,17 @@ export default class MainScreen extends React.Component<any, IMainState> {
         // Edit mode only has a check button
         if (this.state.editMode) {
             return (
-                <View style={styles.infoButtonHolder}>
+                <View
+                    style={styles.editCheckView}>
+
                     <IconButton
                         name="check"
                         size={palette.IconSize}
                         outerStyle={styles.buttonView}
                         onPress={() => this.toReviewMode}
+                        borderless={false}
                     />
+
                 </View>
             );
         }
@@ -209,20 +306,48 @@ export default class MainScreen extends React.Component<any, IMainState> {
         // All other modes(except flashcard mode(handled elsewhere)) have two.
         return (
             <View style={styles.infoButtonHolder}>
-                <IconButton
-                    name="pencil"
-                    size={palette.IconSize}
-                    outerStyle={styles.buttonView}
-                    onPress={() => this.toEditMode}
-                />
-                <IconButton
-                    name="arrow-right"
-                    size={palette.IconSize}
-                    outerStyle={styles.buttonView}
-                    onPress={() => this.toNextItem}
-                />
+                <View style={styles.buttonTextPair}>
+                    <IconButton
+                        name="pencil"
+                        size={palette.IconSize}
+                        outerStyle={styles.buttonView}
+                        onPress={() => this.toEditMode}
+                    />
+                    <Text>Edit Card</Text>
+                </View>
+                {this.addButton()}
+                {this.nextButton()}
+
             </View>
         );
+    }
+
+    addButton() {
+        if (this.state.flashMode) return;
+
+        return <View style={styles.buttonTextPair}>
+            <IconButton
+                name="plus"
+                size={palette.IconSize}
+                outerStyle={styles.buttonView}
+                onPress={() => this.toEditMode}
+            />
+            <Text>New Card</Text>
+        </View>;
+    }
+
+    nextButton() {
+        if (!this.state.flashMode) return;
+
+        return <View style={styles.buttonTextPair}>
+            <IconButton
+                name="arrow-right"
+                size={palette.IconSize}
+                outerStyle={styles.buttonView}
+                onPress={() => this.toNextItem}
+            />
+            <Text>Next Card</Text>
+        </View>;
     }
 
     navBar() {
@@ -249,7 +374,7 @@ export default class MainScreen extends React.Component<any, IMainState> {
 
         // Removes styling on the element after it disappears by animation.
         if (this.state.editMode) {
-            style = this.state.headerTakeUpSpace ? style : this.state.mutable.headerStyle;
+            style = this.state.headerTakeUpSpace ? styles.card : styles.editCard;
         }
 
         const star = this.state.starred ? "★" : "  ";
@@ -270,28 +395,34 @@ export default class MainScreen extends React.Component<any, IMainState> {
                     // Full update
                     const newState = Object.assign({}, this.state) as any;
                     newState.headerTakeUpSpace = false;
-                    newState.mutable = {
-                        headerStyle: { height: 220 }
-                    };
                     this.setState(newState);
 
                     this.headerRef.transition({ height: 220 }, { height: 0 });
 
                 }}>
                 <View style={styles.headerStarView}>
-                    <Text style={styles.headerStar}>{blank}</Text> 
-                <Animatable.Text
-                    ref={handleHeaderTextRef => this.headerTextRef = handleHeaderTextRef}
-                    duration={palette.AnimationDefaultDuration}
-                    transition="opacity" style={styles.characterText}>{this.state.currentWord.header}</Animatable.Text>
-                <Text style={styles.headerStar}>{star}</Text>
+                    <Text style={styles.headerStar}>{blank}</Text>
+                    {this.headerText()}
+                    <Text style={styles.headerStar}>{star}</Text>
                 </View>
-            <View style={styles.tagView}>
-                <Text style={styles.tagText}>MyWords</Text>
-                <IconButton name="plus" size={palette.IconSizeTiny} onPress={() => { }} />
-            </View>
+                <View style={styles.tagView}>
+                    <Text style={styles.tagText}>MyWords</Text>
+                    <IconButton name="plus" size={palette.IconSizeTiny} onPress={() => { }} />
+                </View>
             </Animatable.View >
         );
 
+    }
+
+    headerText() {
+        if (this.state.editMode) {
+            return <TextInput>{this.state.currentWord.header}</TextInput>;
+        }
+        else {
+            return <Animatable.Text
+                ref={handleHeaderTextRef => this.headerTextRef = handleHeaderTextRef}
+                duration={palette.AnimationDefaultDuration}
+                transition="opacity" style={styles.characterText}>{this.state.currentWord.header}</Animatable.Text>;
+        }
     }
 }

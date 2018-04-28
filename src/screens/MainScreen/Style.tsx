@@ -11,11 +11,22 @@ const styles = StyleSheet.create({
         padding: 0,
     },
     card: {
-        flex: 2,
+        flex: 3,
         backgroundColor: palette.BackgroundLight,
         borderRadius: palette.CornerRadius,
         margin: palette.Margin,
         padding: palette.Twenty,
+        justifyContent: "center",
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowRadius: palette.Two,
+        elevation: palette.Elevation,
+        marginBottom: 0,
+    },
+    editCard: {
+        height: 220,
+        backgroundColor: palette.BackgroundLight,
+        borderRadius: palette.CornerRadius,
         justifyContent: "center",
         alignItems: "center",
         shadowColor: "#000",
@@ -41,7 +52,7 @@ const styles = StyleSheet.create({
         marginRight: palette.Margin,
     },
     bottomInfo: {
-        flex: 5,
+        flex: 7,
         borderRadius: palette.CornerRadius,
         flexDirection: "column",
         justifyContent: "flex-start",
@@ -54,12 +65,26 @@ const styles = StyleSheet.create({
         backgroundColor: palette.BackgroundLight,
         padding: 30,
         paddingBottom: 0,
+
+    },
+    bottomInfoInner: {
+        height: 200,
     },
     listItemView: {
         flex: 2,
         flexDirection: "row",
         padding: palette.Five,
         justifyContent: "center",
+        marginBottom: palette.Margin,
+        backgroundColor: palette.BackgroundLight,
+        elevation: 1,
+        shadowRadius: palette.Two,
+    },
+    listItemViewEdit: {
+        flex: 2,
+        flexDirection: "column",
+        padding: palette.Five,
+        justifyContent: "flex-start",
         marginBottom: palette.Margin,
         backgroundColor: palette.BackgroundLight,
         elevation: 1,
@@ -89,25 +114,25 @@ const styles = StyleSheet.create({
     },
     buttonView: {
         backgroundColor: palette.BackgroundLight,
-        marginTop: palette.Thirty,
-        flexDirection: "row",
-        flex: 6,
-        margin: 30,
-        paddingTop: 30,
-        paddingBottom: 30
-        ,
         justifyContent: "center",
         alignItems: "center",
         alignContent: "center",
     },
     infoButtonHolder: {
-
-        marginBottom: palette.Thirty,
+        flex: 4,
+        margin: 40,
         flexDirection: "row",
-        justifyContent: "center"
+        justifyContent: "space-between",
+        alignItems: "stretch",
+        alignContent: "center",
+    },
+    buttonTextPair: {
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
     },
     questionView: {
-        flex: 5,
+        flex: 7,
         borderRadius: palette.CornerRadius,
         justifyContent: "center",
         alignItems: "center",
@@ -125,8 +150,16 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         alignContent: "center",
-        margin: palette.Thirty,
-        padding: palette.Thirty,
+        margin: palette.Twenty,
+        padding: palette.Ten,
+    },
+    editCheckView: {
+        flex: 2,
+        margin: palette.Margin,
+        padding: palette.Margin,
+        justifyContent: "center",
+        alignItems: "center",
+        alignContent: "center",
     },
     iconView: {
         justifyContent: "center",
@@ -160,7 +193,7 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     headerStar: {
-        margin: palette.Margin,
+        margin: palette.Five,
         marginRight: 0,
         fontSize: 24,
     }
