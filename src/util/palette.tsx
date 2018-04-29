@@ -7,9 +7,13 @@ const palette = {
     Black: "#000",
     ActiveRed: "#E82C0C",
     DarkGrey: "#555555",
+    Gold: "#ffcc00",
 
     Highlight: "#8E756F",
     Text: "#555",
+    TextShadowColor: "rgba(0, 0, 0, 0.1)",
+    TextShadowRadius: 1,
+    TextShadowOffset: { width: 0, height: 0 },
     CornerRadius: 3,
     Elevation: 2,
     Margin: 10,

@@ -41,15 +41,24 @@ const styles = StyleSheet.create({
         color: palette.Text,
         textAlignVertical: "center",
         textAlign: "center",
-        textShadowColor: "#000",
-        textShadowRadius: palette.Two,
-        elevation: 4,
+        textShadowColor: palette.TextShadowColor,
+        textShadowOffset: palette.TextShadowOffset,
+        textShadowRadius: palette.TextShadowRadius,
     },
     tagView: {
         flexDirection: "row",
     },
     tagText: {
         marginRight: palette.Margin,
+        textShadowColor: palette.TextShadowColor,
+        textShadowOffset: palette.TextShadowOffset,
+        textShadowRadius: palette.TextShadowRadius,
+    },
+    tagTextNoMargin: {
+        marginTop: palette.Margin,
+        textShadowColor: palette.TextShadowColor,
+        textShadowOffset: palette.TextShadowOffset,
+        textShadowRadius: palette.TextShadowRadius,
     },
     bottomInfo: {
         flex: 7,
@@ -99,8 +108,9 @@ const styles = StyleSheet.create({
         alignContent: "stretch",
         textAlignVertical: "bottom",
         textAlign: "left",
-        textShadowColor: palette.Text,
-        textShadowRadius: palette.Two,
+        textShadowColor: palette.TextShadowColor,
+        textShadowOffset: palette.TextShadowOffset,
+        textShadowRadius: palette.TextShadowRadius,
     },
     listItemRight: {
         flex: 1,
@@ -109,8 +119,9 @@ const styles = StyleSheet.create({
         textAlign: "left",
         textAlignVertical: "bottom",
         alignContent: "center",
-        textShadowColor: palette.Text,
-        textShadowRadius: palette.Two,
+        textShadowColor: palette.TextShadowColor,
+        textShadowOffset: palette.TextShadowOffset,
+        textShadowRadius: palette.TextShadowRadius,
     },
     buttonView: {
         backgroundColor: palette.BackgroundLight,
@@ -119,11 +130,11 @@ const styles = StyleSheet.create({
         alignContent: "center",
     },
     infoButtonHolder: {
-        flex: 4,
+        flex: 5,
         margin: 40,
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "stretch",
+        alignItems: "center",
         alignContent: "center",
     },
     buttonTextPair: {
@@ -195,7 +206,8 @@ const styles = StyleSheet.create({
     headerStar: {
         margin: palette.Five,
         marginRight: 0,
-        fontSize: 24,
+        fontSize: 28,
+        color: palette.BackgroundColor,
     }
 });
 

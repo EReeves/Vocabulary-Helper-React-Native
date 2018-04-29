@@ -9,7 +9,8 @@ import {
     TouchableNativeFeedback,
     Animated,
     Easing,
-    TextInput
+    TextInput,
+    Keyboard
 } from "react-native";
 
 import { styles } from "./Style";
@@ -57,8 +58,9 @@ export default class ListScreen extends React.Component<IProps, any> {
             console.log(this.state.visibleWords);
             return (<FlatList style={{}}
                 data={this.state.visibleWords}
-                keyExtractor={({ item, index }) => index}
-                renderItem={({ item, index }) => this.listItem(item.key, item.header, item.meaning)}
+                keyExtractor={(item, index) => item.key.toString()}
+                renderItem={({ item, index }) => this.listItem(item)}
+                keyboardShouldPersistTaps="always"
             ></FlatList>);
         }
 
@@ -84,20 +86,23 @@ export default class ListScreen extends React.Component<IProps, any> {
     }
 
 
-    listItem(key: string, text: string, meaning: string) {
+    listItem(item: Word) {
+        console.log(item);
         return (<View>
-            <BasicButton title={text} onPress={(key) => this.onButtonPress.bind(key)} viewStyle={styles.textView} textStyle={styles.textItem} />
+            <BasicButton title={item.header} onPress={(item) => this.onButtonPress.bind(item)} viewStyle={styles.textView} textStyle={styles.textItem} />
         </View>);
     }
 
     onNavigatorEvent(event) {
         if (event.id === "backWithCheck" || event.id === "backPress") {
+            Keyboard.dismiss();
             this.props.navigator.resetTo(NavigationIndex.getScreenConfig({ flashMode: false }, "screens.MainScreen", "Vocabulary Helper"));
         }
     }
 
-    onButtonPress(key: number) {
-        console.log("ah");
-        this.props.navigator.popToRoot({ passProps: { flashMode: false, wordKey: key } });
+    onButtonPress(item: Word) {
+        
+        Keyboard.dismiss();
+        this.props.navigator.resetTo(NavigationIndex.getScreenConfig({ flashMode: false, wordKey: item.key }, "screens.MainScreen", "Vocabulary Helper"));
     }
 } 

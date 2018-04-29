@@ -38,6 +38,7 @@ import { WordList } from "../../backend/WordList";
 interface IProps {
     navigator: Navigator;
     wordList: WordList;
+    wordKey: number;
 }
 
 export default class MainScreen extends React.Component<IProps, IMainState> {
@@ -324,7 +325,7 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
                         outerStyle={styles.buttonView}
                         onPress={() => this.toEditMode}
                     />
-                    <Text>Edit Card</Text>
+                    <Text style={styles.tagTextNoMargin}>Edit Card</Text>
                 </View>
                 {this.addButton()}
                 {this.nextButton()}
@@ -343,7 +344,7 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
                 outerStyle={styles.buttonView}
                 onPress={() => this.toEditMode}
             />
-            <Text>New Card</Text>
+            <Text style={styles.tagTextNoMargin}>New Card</Text>
         </View>;
     }
 
@@ -357,7 +358,7 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
                 outerStyle={styles.buttonView}
                 onPress={() => this.toNextItem}
             />
-            <Text>Next Card</Text>
+            <Text style={styles.tagTextNoMargin}>Next Card</Text>
         </View>;
     }
 
