@@ -40,7 +40,6 @@ export default class ListScreen extends React.Component<IProps, any> {
         this.onTextChanged = this.onTextChanged.bind(this);
         this.list = this.list.bind(this);
         this.onNavigatorEvent = this.onNavigatorEvent.bind(this);
-        this.onButtonPress = this.onButtonPress.bind(this);
     }
     render() {
         return <View style={styles.container}>
@@ -87,22 +86,25 @@ export default class ListScreen extends React.Component<IProps, any> {
 
 
     listItem(item: Word) {
-        console.log(item);
+
+        // man I had JS lambdas/react-natives function binding. 
+        // The class function was buggy about passing properties to react-native-navigation for whatever reason. This works.
+        const fun = () => {
+            Keyboard.dismiss();
+            const key = item.key;
+            this.props.navigator.resetTo(NavigationIndex.getScreenConfig({ flashMode: false, wordKey: key }, "screens.MainScreen", "Vocabulary Helper"));
+        };
+
         return (<View>
-            <BasicButton title={item.header} onPress={(item) => this.onButtonPress.bind(item)} viewStyle={styles.textView} textStyle={styles.textItem} />
+            <BasicButton title={item.header} onPress={() => fun} viewStyle={styles.textView} textStyle={styles.textItem} />
         </View>);
     }
 
     onNavigatorEvent(event) {
         if (event.id === "backWithCheck" || event.id === "backPress") {
             Keyboard.dismiss();
+
             this.props.navigator.resetTo(NavigationIndex.getScreenConfig({ flashMode: false }, "screens.MainScreen", "Vocabulary Helper"));
         }
-    }
-
-    onButtonPress(item: Word) {
-        
-        Keyboard.dismiss();
-        this.props.navigator.resetTo(NavigationIndex.getScreenConfig({ flashMode: false, wordKey: item.key }, "screens.MainScreen", "Vocabulary Helper"));
     }
 } 

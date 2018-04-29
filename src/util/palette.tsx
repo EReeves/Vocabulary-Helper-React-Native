@@ -30,7 +30,7 @@ const palette = {
     BarSizeSmall: 48,
     IconSizeTiny: 20,
     IconSizeSmall: 60,
-    IconSize: 80,
+    IconSize: 60,
     IconSizeHuge: 100,
 
     // Animation

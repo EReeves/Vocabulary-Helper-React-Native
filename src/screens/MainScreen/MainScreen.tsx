@@ -66,6 +66,9 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
         state.wordData = this.wordList.renderData(false);
         this.state = state;
 
+        console.log("constructor", this.props);
+
+
         // onNavigatorEvent
         this.props.navigator.addOnNavigatorEvent((event) => this.onNavigatorEvent(event));
         // Back button handler
@@ -160,7 +163,10 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
 
     /** Component overrides */
 
+ 
+
     componentWillMount() {
+
     }
 
     componentWillUnmount() {

@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
         padding: 0,
     },
     card: {
-        flex: 3,
+        flex: 4,
         backgroundColor: palette.BackgroundLight,
         borderRadius: palette.CornerRadius,
         margin: palette.Margin,
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
         shadowRadius: palette.Two,
         elevation: palette.Elevation,
         backgroundColor: palette.BackgroundLight,
-        padding: 30,
+        padding: 20,
         paddingBottom: 0,
 
     },
