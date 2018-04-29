@@ -11,13 +11,14 @@ export const styles = StyleSheet.create({
         padding: 0,
     },
     listView: {
-        flex: 2,
+        flex: 5,
         backgroundColor: palette.BackgroundLight,
         borderRadius: palette.CornerRadius,
         margin: palette.Margin,
         padding: palette.Twenty,
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "stretch",
+        alignContent: "flex-start",
         shadowColor: "#000",
         shadowRadius: palette.Two,
         elevation: palette.Elevation,
@@ -34,4 +35,18 @@ export const styles = StyleSheet.create({
         padding: palette.Ten,
         fontSize: 22,
     },
+    textView: {
+        padding: palette.Ten,
+        backgroundColor: palette.BackgroundLight,
+        elevation: 1,
+        shadowRadius: palette.Two,
+        borderRadius: palette.CornerRadius
+    },
+    textItem: {
+        fontSize: 28,
+        textAlign: "center",
+        elevation: 1,
+        shadowRadius: palette.Two,
+        marginBottom: palette.Five,
+    }
 });

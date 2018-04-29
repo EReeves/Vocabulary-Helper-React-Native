@@ -1,12 +1,13 @@
 import { IconMap } from "../../util/IconMap";
 import { NavigationIndex } from "../NavigationIndex";
 import { Alert } from "react-native";
+import * as React from "react";
 
 // Helper to define buttons in the nabigation bar.
 export class NavigationButtons {
 
     constructor(public props) {
-
+        console.log(props);
         const iconMap = new IconMap();
 
         iconMap.iconsLoaded.then(() => {
@@ -46,8 +47,9 @@ export class NavigationButtons {
 
 
             if (event.id === "searchpress") {
-                this.props.navigator.push(NavigationIndex.getScreenConfig({}, "screens.ListScreen", "Search"));
+                this.props.navigator.push(NavigationIndex.getScreenConfig({words: this.props.words}, "screens.ListScreen", "Search"));
             }
         }
     }
+
 }

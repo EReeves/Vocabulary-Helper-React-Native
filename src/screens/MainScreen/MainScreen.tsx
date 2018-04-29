@@ -35,21 +35,32 @@ import { WordList } from "../../backend/WordList";
 
 /** Import End */
 
-export default class MainScreen extends React.Component<any, IMainState> {
+interface IProps {
+    navigator: Navigator;
+    wordList: WordList;
+}
+
+export default class MainScreen extends React.Component<IProps, IMainState> {
 
     wordList: WordList;
     iconMap: IconMap;
+    navButtons: NavigationButtons;
 
     constructor(public props) {
         super(props);
 
         // Set up
-        const _ = new NavigationButtons(props);
-        this.iconMap = new IconMap();
         this.wordList = WordList.load(false);
+        this.props.wordList = this.wordList;
+        this.navButtons = new NavigationButtons({ navigator: this.props.navigator, words: this.wordList.words });
+        this.iconMap = new IconMap();
+
 
         // Set state
         const state = States.GetMode(props.flashMode);
+        if (this.props.wordKey !== undefined) {
+            this.wordList.toKey(this.props.wordKey);
+        }
         state.currentWord = this.wordList.currentWord;
         state.wordData = this.wordList.renderData(false);
         this.state = state;
@@ -136,7 +147,7 @@ export default class MainScreen extends React.Component<any, IMainState> {
                 cw.example = text;
                 break;
         }
-        this.wordList.setWord(cw.id, cw);
+        this.wordList.setWord(cw.key, cw);
         const data = cw.renderData(true) as any;
         const newState = Object.assign({}, this.state) as IMainState;
         newState.currentWord = cw;

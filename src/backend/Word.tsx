@@ -4,7 +4,7 @@ export interface IWordRenderData {
 }
 
 export class Word {
-    id: number;
+    key: number;
     header: string;
     tags?: string[];
     meaning: string;

@@ -23,7 +23,7 @@ export class NavigationIndex {
 
     // Gets the configurations for different screens, passed in to the navigator when pop/push screens etc.
 
-    public static getScreenConfig(props: {}, screenName: string, titleString: string) {
+    public static getScreenConfig(props: any, screenName: string, titleString: string) {
         return { screen: screenName, title: titleString, tintColor: palette.White, navigatorStyle: NavigationIndex.mainNavigatorStyle, passProps: props, overrideBackPress: true  };
     }
 }

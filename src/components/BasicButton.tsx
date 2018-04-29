@@ -27,13 +27,13 @@ export default class BasicButton extends React.Component<IProps, {}> {
                     false
                 )}>
 
-            <View style={this.props.viewStyle}>
+                <View style={this.props.viewStyle}>
 
-            <Text style={this.props.textStyle}>{this.props.title}</Text>
+                    <Text style={this.props.textStyle}>{this.props.title}</Text>
 
-            </View>
+                </View>
 
-            </TouchableNativeFeedback> 
+            </TouchableNativeFeedback>
         );
     }
 }
