@@ -1,4 +1,4 @@
-import { Word } from "../../backend/Word";
+import { Word, IWordRenderData } from "../../backend/Word";
 
 export interface IMainState {
     flashMode: boolean;
@@ -8,7 +8,7 @@ export interface IMainState {
     reveal: boolean;
     editMode: boolean;
     currentWord?: Word;
-    wordData?: ReadonlyArray<any>;
+    wordData?: IWordRenderData;
     headerTakeUpSpace?: boolean;
     starred?: boolean;
 }

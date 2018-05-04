@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
         shadowRadius: palette.Two,
         elevation: palette.Elevation,
         marginBottom: 0,
+        opacity: 1
     },
     editCard: {
         height: 220,
@@ -33,6 +34,7 @@ const styles = StyleSheet.create({
         shadowRadius: palette.Two,
         elevation: palette.Elevation,
         marginBottom: 0,
+        opacity: 0
     },
     characterText: {
         fontFamily: "NotoSans-Regular",

@@ -84,9 +84,8 @@ export default class ListScreen extends React.Component<IProps, any> {
         this.setState({ visibleWords: visible });
     }
 
-
+    // Render list item
     listItem(item: Word) {
-
         // man I had JS lambdas/react-natives function binding. 
         // The class function was buggy about passing properties to react-native-navigation for whatever reason. This works.
         const fun = () => {

@@ -42,6 +42,7 @@ export class NavigationButtons {
                 this.props.navigator.toggleDrawer({
                     side: "left",
                     animated: true,
+                    duration: 10000
                 });
             }
 

@@ -14,7 +14,7 @@ const palette = {
     TextShadowColor: "rgba(0, 0, 0, 0.1)",
     TextShadowRadius: 1,
     TextShadowOffset: { width: 0, height: 0 },
-    CornerRadius: 3,
+    CornerRadius: 7,
     Elevation: 2,
     Margin: 10,
 
@@ -34,7 +34,7 @@ const palette = {
     IconSizeHuge: 100,
 
     // Animation
-    AnimationDefaultDuration: 300
+    AnimationDefaultDuration: 500
 };
 
 export default palette;

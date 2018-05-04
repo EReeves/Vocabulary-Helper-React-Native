@@ -5,13 +5,13 @@ export interface IWordRenderData {
 
 export class Word {
     key: number;
-    header: string;
+    header?: string;
     tags?: string[];
-    meaning: string;
+    meaning?: string;
     pronunciation?: string;
     hint?: string;
     example?: string;
-    starred: boolean;
+    starred?: boolean;
     
 
     constructor(init?: Partial<Word>) {

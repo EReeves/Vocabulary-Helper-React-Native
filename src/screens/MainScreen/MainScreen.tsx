@@ -32,6 +32,7 @@ import RNExitApp from "react-native-exit-app";
 import FloatingSideButton from "../../components/FloatingSideButton";
 import IconButton from "../../components/IconButton";
 import { WordList } from "../../backend/WordList";
+import { IWordRenderData } from "../../backend/Word";
 
 /** Import End */
 
@@ -72,44 +73,53 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
         // onNavigatorEvent
         this.props.navigator.addOnNavigatorEvent((event) => this.onNavigatorEvent(event));
         // Back button handler
-        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
-        // Bind methods to .this
-        this.toReviewMode = this.toReviewMode.bind(this);
-        this.toEditMode = this.toEditMode.bind(this);
-        this.toRevealedCard = this.toRevealedCard.bind(this);
-        this.toNextItem = this.toNextItem.bind(this);
-        this.toPreviousItem = this.toPreviousItem.bind(this);
-        this.toggleStar = this.toggleStar.bind(this);
-        this.onTextInput = this.onTextInput.bind(this);
+
     }
 
     /** Mode/State switching */
 
-    toRevealedCard() {
+    toRevealedCard = () => {
         this.setState(States.flashModeRevealed);
     }
 
     toEditMode = () => {
         const newState = Object.assign({}, States.editMode);
-        (newState.wordData as any) = this.state.currentWord.renderData(true);
+        newState.headerTakeUpSpace = false;
+        newState.currentWord = this.wordList.currentWord;
+        (newState.wordData as any) = this.wordList.currentWord.renderData(true);
+        this.setState(newState);
+
+        if (this.headerRef === null) return;
+        this.headerRef.transition({ height: 220 }, { height: 0 });
+    }
+
+    // This is just edit mode but we add a blank vocab item in.
+    toAddMode = () => {
+        const word = this.wordList.addNewPlaceholder();     
+
+        this.toEditMode();
+    }
+
+    toReviewMode = () => {
+        // Need to refresh word data too
+        const newState = Object.assign({}, States.reviewMode);
+        newState.currentWord = this.wordList.currentWord;
+        newState.wordData = this.wordList.currentWord.renderData(false) as ReadonlyArray<any>;
+        newState.starred = newState.currentWord.starred;
         this.setState(newState);
     }
 
-    toReviewMode() {
-        this.setState(States.reviewMode);
-    }
-
-    toNextItem() {
+    toNextItem = () => {
         this.wordList.next();
         this.onWordNav();
     }
 
-    toPreviousItem() {
+    toPreviousItem = () => {
         this.wordList.prev();
         this.onWordNav();
     }
 
-    onWordNav() {
+    onWordNav = () => {
         this.setState({
             currentWord: this.wordList.currentWord,
             wordData: this.wordList.renderData(this.state.editMode),
@@ -122,14 +132,14 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
         }
     }
 
-    toggleStar() {
+    toggleStar = () => {
         const starState = this.state.starred !== undefined ? !this.state.starred : true;
 
         this.setState({ starred: starState });
         this.state.currentWord.starred = starState;
     }
 
-    onTextInput(key: string, text: string) {
+    onTextInput = (key: string, text: string) => {
 
         console.log(key + text);
         const cw = this.state.currentWord;
@@ -182,7 +192,7 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
 
     /** Component overrides END */
 
-    handleBackButtonClick() {
+    handleBackButtonClick = () => {
         if (this.state.editMode) {
             const newState = Object.assign({}, States.GetMode(this.state.flashMode));
             newState.editMode = false;
@@ -243,7 +253,7 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
             (<View style={styles.listItemViewEdit}>
                 <Text style={styles.listItemLeft}>{head + ":"}</Text>
                 <TextInput
-                    onSubmitEditing={(text) => this.onTextInput(head, text.nativeEvent.text)}
+                    onEndEditing={(text) => this.onTextInput(head, text.nativeEvent.text)}
                     style={styles.listItemRight}>{footer}</TextInput>
             </View>)
 
@@ -271,7 +281,7 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
                     <View style={bottomInnerStyle}>
                         <KeyboardAvoidingView>
                             <FlatList
-                                data={this.state.wordData}
+                                data={this.state.wordData as any}
                                 extraData={this.state.editMode}
                                 renderItem={({ item }) => this.listItem(item.key, item.value)}
                             />
@@ -348,7 +358,7 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
                 name="plus"
                 size={palette.IconSize}
                 outerStyle={styles.buttonView}
-                onPress={() => this.toEditMode}
+                onPress={() => this.toAddMode}
             />
             <Text style={styles.tagTextNoMargin}>New Card</Text>
         </View>;
@@ -387,7 +397,7 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
     header() {
 
         // Are we leaving or entering the view?
-        const anim = this.state.editMode ? "bounceOutUp" : "bounceInDown";
+        const anim = this.state.editMode ? "" : "bounceInDown"; // only animate in
         let style = styles.card;
 
         // Removes styling on the element after it disappears by animation.
@@ -405,17 +415,7 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
                 duration={palette.AnimationDefaultDuration}
                 style={style}
                 ref={handleHeaderRef => this.headerRef = handleHeaderRef}
-
-                onAnimationEnd={() => {
-
-                    if (this.headerRef === null) return;
-
-                    // Full update
-                    const newState = Object.assign({}, this.state) as any;
-                    newState.headerTakeUpSpace = false;
-                    this.setState(newState);
-
-                    this.headerRef.transition({ height: 220 }, { height: 0 });
+                onAnimationBegin={() => {
 
                 }}>
                 <View style={styles.headerStarView}>

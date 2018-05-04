@@ -57,6 +57,16 @@ export class WordList {
         return wordList;
     }
 
+    // Adds a blank word and sets to the current word.
+    public addNewPlaceholder(): Word {
+        const newWord = new Word();
+        newWord.key = this.words.length - 1;
+        this.words.push(newWord);
+        this.currentWordPosition = this.words.length;
+        this.currentWord = this.words[this.words.length - 1];
+        return this.currentWord;
+    }
+
     // Go to next word, wrap to the first item if none left.
     public next(): Word {
         this.currentWordPosition++;
