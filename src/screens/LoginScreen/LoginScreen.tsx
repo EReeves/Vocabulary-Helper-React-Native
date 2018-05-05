@@ -8,7 +8,6 @@ import { Authentication, IAuthInfo } from "../../backend/authentication/Authenti
 
 
 interface ILoginProperties {
-    auth: Authentication;
     userCallback: (user: RNFirebase.UserCredential) => void;
 }
 
@@ -19,6 +18,8 @@ interface ILoginState {
 
 export default class LoginScreen extends React.Component<ILoginProperties, ILoginState> {
 
+    auth;
+
     constructor(public props) {
         super(props);
         this.state = {
@@ -26,12 +27,13 @@ export default class LoginScreen extends React.Component<ILoginProperties, ILogi
             register: false
         };
 
+        this.auth = Authentication.instance();
         this.goRegister = this.goRegister.bind(this);
     }
 
     render() {
         if (this.state.register) {
-            return <RegisterScreen auth={this.props.auth} userCallback={this.props.userCallback} />;
+            return <RegisterScreen userCallback={this.props.userCallback} />;
         }
 
         if (!this.state.submitted) {
@@ -58,7 +60,7 @@ export default class LoginScreen extends React.Component<ILoginProperties, ILogi
             password: "password"
         };
 
-        this.props.auth.onLogin(authInfo, this.props.userCallback);
+        this.auth.onLogin(authInfo, this.props.userCallback);
 
         this.setState({ submitted: true, register: false });
     }

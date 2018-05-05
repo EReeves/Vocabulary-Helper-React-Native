@@ -27,6 +27,7 @@ import { IconMap } from "../../util/IconMap";
 import Icon from "react-native-vector-icons/EvilIcons";
 import * as Animatable from "react-native-animatable";
 import RNExitApp from "react-native-exit-app";
+import { RNFirebase } from "react-native-firebase";
 
 // Generic Components
 import FloatingSideButton from "../../components/FloatingSideButton";
@@ -64,7 +65,7 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
             this.wordList.toKey(this.props.wordKey);
         }
         state.currentWord = this.wordList.currentWord;
-        state.wordData = this.wordList.renderData(false);
+        state.wordData = this.wordList.currentWord.renderData(false);
         this.state = state;
 
         console.log("constructor", this.props);
@@ -122,7 +123,7 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
     onWordNav = () => {
         this.setState({
             currentWord: this.wordList.currentWord,
-            wordData: this.wordList.renderData(this.state.editMode),
+            wordData: this.wordList.currentWord.renderData(this.state.editMode),
             reveal: false,
             starred: this.wordList.currentWord.starred
         });
@@ -136,13 +137,12 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
         const starState = this.state.starred !== undefined ? !this.state.starred : true;
 
         this.setState({ starred: starState });
-        this.state.currentWord.starred = starState;
+        this.wordList.currentWord.starred = starState;
     }
 
     onTextInput = (key: string, text: string) => {
 
-        console.log(key + text);
-        const cw = this.state.currentWord;
+        const cw = this.wordList.currentWord;
 
         switch (key) {
             case "Word":
@@ -161,12 +161,21 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
                 cw.example = text;
                 break;
         }
-        this.wordList.setWord(cw.key, cw);
+        this.wordList.setWord(cw.key, cw, false);
+        this.wordList.currentWord = cw;
+
         const data = cw.renderData(true) as any;
         const newState = Object.assign({}, this.state) as IMainState;
-        newState.currentWord = cw;
         newState.wordData = data;
         this.setState(newState);
+    }
+
+    // When edit/add mode is submitted
+    onCheck = () => {
+        // Edit finished, we need to make it update.
+        this.wordList.setWord(this.wordList.currentWord.key, this.wordList.currentWord, true);
+        // Then back to review mode.
+        this.toReviewMode();
     }
 
     /** Mode/State switching END */
@@ -198,7 +207,6 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
             newState.editMode = false;
             newState.reveal = false;
             this.setState(newState);
-            console.log("asd");
             return;
         }
         if (!this.state.reveal) {
@@ -323,7 +331,7 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
                         name="check"
                         size={palette.IconSize}
                         outerStyle={styles.buttonView}
-                        onPress={() => this.toReviewMode}
+                        onPress={() => this.onCheck }
                         borderless={false}
                     />
 
@@ -434,13 +442,13 @@ export default class MainScreen extends React.Component<IProps, IMainState> {
 
     headerText() {
         if (this.state.editMode) {
-            return <TextInput>{this.state.currentWord.header}</TextInput>;
+            return <TextInput>{this.wordList.currentWord.header}</TextInput>;
         }
         else {
             return <Animatable.Text
                 ref={handleHeaderTextRef => this.headerTextRef = handleHeaderTextRef}
                 duration={palette.AnimationDefaultDuration}
-                transition="opacity" style={styles.characterText}>{this.state.currentWord.header}</Animatable.Text>;
+                transition="opacity" style={styles.characterText}>{this.wordList.currentWord.header}</Animatable.Text>;
         }
     }
 }

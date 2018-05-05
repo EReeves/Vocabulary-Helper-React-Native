@@ -1,8 +1,10 @@
 const palette = {
     BackgroundDark: "#E2E2E2",
     BackgroundLight: "#FFFFFF",
-    BackgroundColor: "#D3513D",
-    BackgroundColorDark: "#B74435",
+    BackgroundColor: "#0277bc",
+    BackgroundColorDark: "#01579B", 
+    // BackgroundColor: "#D3513D",
+    // BackgroundColorDark: "#B74435",
     White: "#FFF",
     Black: "#000",
     ActiveRed: "#E82C0C",

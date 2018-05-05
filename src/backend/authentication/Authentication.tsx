@@ -8,6 +8,19 @@ export interface IAuthInfo {
 
 export class Authentication {
 
+    private static _instance: Authentication;
+    public static instance(): Authentication {
+
+        if (Authentication._instance === undefined) {
+            this._instance = new Authentication();
+        }
+        return Authentication._instance;
+    }
+
+    private constructor() {}
+
+    public user: RNFirebase.UserInfo;
+
     onLogin(state: IAuthInfo, userCallback: (user: RNFirebase.UserCredential) => void) {
         const { email, password } = state;
         firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password)
@@ -17,6 +30,7 @@ export class Authentication {
                 // `onAuthStateChanged` listener we set up in App.js earlier
                 console.log("Authenticated!");
                 console.log(user);
+                this.user = user.user;
 
                 AsyncStorage.setItem("userData", JSON.stringify(user));
 

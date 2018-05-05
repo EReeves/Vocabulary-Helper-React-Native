@@ -24,15 +24,18 @@ import { WordList } from "../../backend/WordList";
 import { Word } from "../../backend/Word";
 
 interface IProps {
-    wordList: WordList;
     navigator: Navigator;
 }
 
 export default class ListScreen extends React.Component<IProps, any> {
+    wordList: WordList;
+
     constructor(public props) {
         super(props);
+        this.wordList = WordList.instance();
+
         this.state = {
-            visibleWords: this.props.words
+            visibleWords: this.wordList.words
         };
 
         this.props.navigator.addOnNavigatorEvent((event) => this.onNavigatorEvent(event));
@@ -69,13 +72,13 @@ export default class ListScreen extends React.Component<IProps, any> {
     onTextChanged(text: string) {
 
         if (text === "" || text === undefined) {
-            this.setState({ visibleWords: this.props.words });
+            this.setState({ visibleWords: this.wordList.words });
         }
 
         text = text.toLowerCase();
-        const words = this.props.words;
+        const words = this.wordList.words;
         const visible = [];
-        for (let i = 0; i < this.props.words.length; i++) {
+        for (let i = 0; i < this.wordList.words.length; i++) {
             const word = words[i];
             if (word.header.toLowerCase().includes(text) || word.meaning.toLowerCase().includes(text)) {
                 visible.push(word);

@@ -18,6 +18,7 @@ interface IRegisterState {
 }
 
 export class RegisterScreen extends React.Component<IRegisterProperties, IRegisterState> {
+    auth;
 
     constructor(public props) {
         super(props);
@@ -26,6 +27,7 @@ export class RegisterScreen extends React.Component<IRegisterProperties, IRegist
             email: "",
             password: ""
         };
+        this.auth = Authentication.instance();
     }
 
     render() {
@@ -52,7 +54,7 @@ export class RegisterScreen extends React.Component<IRegisterProperties, IRegist
             password: this.state.password
         };
 
-        this.props.auth.onRegister(authInfo, this.props.userCallback);
+        this.auth.onRegister(authInfo, this.props.userCallback);
 
         this.setState({ submitted: true, password: "" });
     }

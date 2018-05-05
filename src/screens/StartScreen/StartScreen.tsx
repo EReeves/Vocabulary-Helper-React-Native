@@ -33,7 +33,7 @@ export default class StartScreen extends React.Component<IStartProperties, IStar
             user: undefined
         };
 
-        this.auth = new Authentication();
+        this.auth = Authentication.instance();
     }
     /**
      * When the App component mounts, we listen for any authentication
@@ -51,6 +51,10 @@ export default class StartScreen extends React.Component<IStartProperties, IStar
                 // tslint:disable-next-line:no-null-keyword
                 user: userResult,
             });
+            
+            if (userResult !== null) {
+                this.auth.user = userResult.user;
+            }
         });
     }
     /**
@@ -64,12 +68,13 @@ export default class StartScreen extends React.Component<IStartProperties, IStar
     render() {
         // The application is initialising
         if (this.state.loading) return <LoadingScreen />;
+
         // The user is an Object, so they're logged in
         if (this.state.user !== null) {
 
             this.props.navigator.resetTo(NavigationIndex.getScreenConfig({ flashMode: false }, "screens.MainScreen", "Vocabulary Helper"));
         }
         // The user is null, so they're logged out
-        return <LoginScreen auth={this.auth} userCallback={(userResult) => { this.setState({ loading: false, user: userResult }); }} />;
+        return <LoginScreen userCallback={(userResult) => { this.setState({ loading: false, user: userResult }); }} />;
     }
 }
