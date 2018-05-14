@@ -65,13 +65,13 @@ export class WordList {
             return this._instance;
         }
 
-        const auth = Authentication.instance();
-        if (auth.user === undefined) {
+        if (Authentication.user() == null) {
             // This shouldn't happen, but crash anyway if they open the activity directly.
             throw new Error("Not logged in");
         }
 
-        const wordList = new WordList(auth.user.uid);
+        const uid = Authentication.user().uid;
+        const wordList = new WordList(uid);
         // TODO: populate;
 
         const bonjour = new Word({

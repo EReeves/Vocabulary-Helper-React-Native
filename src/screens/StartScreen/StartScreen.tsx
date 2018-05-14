@@ -33,7 +33,7 @@ export default class StartScreen extends React.Component<IStartProperties, IStar
             user: undefined
         };
 
-        this.auth = Authentication.instance();
+        this.auth = Authentication.instance;
     }
     /**
      * When the App component mounts, we listen for any authentication
@@ -44,17 +44,19 @@ export default class StartScreen extends React.Component<IStartProperties, IStar
     componentDidMount() {
         this.authSubscription = firebase.auth().onAuthStateChanged(userResult => {
 
-            console.log(userResult);
-
-            this.setState({
-                loading: false,
-                // tslint:disable-next-line:no-null-keyword
-                user: userResult,
-            });
-            
             if (userResult !== null) {
-                this.auth.user = userResult.user;
+                this.setState({
+                    loading: false,
+                    user: userResult,
+                });
             }
+            else {
+                this.setState({
+                    loading: false,
+                    user: undefined
+                });
+            }
+
         });
     }
     /**
@@ -67,12 +69,12 @@ export default class StartScreen extends React.Component<IStartProperties, IStar
 
     render() {
         // The application is initialising
-        if (this.state.loading) return <LoadingScreen />;
+        if (this.state.loading && !firebase.auth().currentUser) return <LoadingScreen />;
 
         // The user is an Object, so they're logged in
-        if (this.state.user !== null) {
+        if (firebase.auth().currentUser != null) {
 
-            this.props.navigator.resetTo(NavigationIndex.getScreenConfig({ flashMode: false }, "screens.MainScreen", "Vocabulary Helper"));
+            this.props.navigator.resetTo(NavigationIndex.getScreenConfig({ flashMode: false }, "screens.MainScreen", "Word Aboard"));
         }
         // The user is null, so they're logged out
         return <LoginScreen userCallback={(userResult) => { this.setState({ loading: false, user: userResult }); }} />;

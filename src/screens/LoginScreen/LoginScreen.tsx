@@ -27,7 +27,7 @@ export default class LoginScreen extends React.Component<ILoginProperties, ILogi
             register: false
         };
 
-        this.auth = Authentication.instance();
+        this.auth = Authentication.instance;
         this.goRegister = this.goRegister.bind(this);
     }
 

@@ -111,7 +111,7 @@ export default class DrawerScreen extends React.Component<any, IDrawerState> {
         }).start();
 
         // Reset navigation to reload MainScreen
-        this.props.navigator.resetTo(NavigationIndex.getScreenConfig({ flashMode: newState.flashMode }, "screens.MainScreen", "Vocabulary Helper"));
+        this.props.navigator.resetTo(NavigationIndex.getScreenConfig({ flashMode: newState.flashMode }, "screens.MainScreen", "Word Aboard"));
     }
 
     goFlashcard() {
